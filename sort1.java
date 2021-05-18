@@ -158,6 +158,9 @@ public static void partitionArray2(int []arr,int idx)
   swap(arr,ptr,n-1);
   
 }
+
+
+
  public static void main(String []args)
     {
      int []arr={454,54,34,21,34,21,32,45};
@@ -168,17 +171,19 @@ public static void partitionArray2(int []arr,int idx)
     //  }
   
 //   int []A={1,2,3,4,5,6};
-//   int []B={4,5,6,7,8,9,10,11};
+ //int []B={4,5,6,7,8,9,10,11};
 //   int []res=mergeSorted(A,arr);
 //   for(int i=0;i<res.length;i++)
 //   {
 //       System.out.print(res[i]+" ");
 //   }
-partitionArray2(arr,6);
-for(int i=0;i<arr.length;i++)
-{
-    System.out.print(arr[i]+" ");
-}
+// partitionArray2(arr,6);
+// for(int i=0;i<arr.length;i++)
+// {
+//     System.out.print(arr[i]+" ");
+// }
+
+
 
     }
 }
