@@ -27,20 +27,20 @@ while(itr<=ei)
 return p;
 }
 
-public static void quickSort(int []arr,int si,int ei)
-{
-    if(si>ei)
-    {
-        return ;
-    }
+// public static void quickSort(int []arr,int si,int ei)
+// {
+//     if(si>ei)
+//     {
+//         return ;
+//     }
     
-    int pvtInd=ei;
-    int p=partitionOnPivot(arr,si,ei,pvtInd);
+//     int pvtInd=ei;
+//     int p=partitionOnPivot(arr,si,ei,pvtInd);
 
-    quickSort(arr,si,p-1);
-    quickSort(arr,p+1,ei);
+//     quickSort(arr,si,p-1);
+//     quickSort(arr,p+1,ei);
 
-}
+// }
 
 
 //Kth largest element  in < O(nlog(n))    Approach : binary Search + QuickSort Technique
@@ -54,11 +54,11 @@ public static int quickSelect(int []arr,int si,int ei,int k)
 
     int p=partitionOnPivot(arr,si,ei,ei);
 
-    if(p==arr.length-k)
+    if(p==k)
     {
         return  arr[p];
     }
-    else if(p<arr.length-k)
+    else if(p<k)
     {
         return quickSelect(arr,p+1,ei,k);
     }
@@ -72,15 +72,29 @@ public static int quickSelect(int []arr,int si,int ei,int k)
 public static void main(String[]args )
 {
 
-int []arr={30,-43,-54,3,45,0,1,-6,45,-43,45,45,-65,12,-90};
-int n=arr.length;
+Scanner scn=new Scanner(System.in);
+int n=scn.nextInt();
 
-System.out.println(quickSelect(arr,0,n-1,9));
-quickSort(arr,0,n-1);
+int []arr=new int[n];
 for(int i=0;i<n;i++)
 {
-    System.out.print(arr[i]+" ");
+    arr[i]=scn.nextInt();
 }
+int i=scn.nextInt();
+quickSelect(arr,0,n-1,i);
+// quickSort(arr,0,n-1);
+ArrayList<Integer> list=new ArrayList<>(); 
+Collections.sort(list);
+for(int j=i+1;j<n;j++)
+{
+    list.add(arr[j]);;
+}
+
+for(int j=0;j<list.size();j++)
+{
+    System.out.print(list.get(j));
+}
+
 
 }
 
