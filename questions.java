@@ -66,4 +66,104 @@ public class questions{
         
     }
 
+
+// segregate even and odd nodes                      CareFull when joining  odd and even linked lists
+
+
+    public void oddEven(Node head)
+{
+    if(this.head==null || this.head.next==null)
+    {
+       return head;
+    }
+
+    Node odd= new Node(-1);
+    Node op=odd;
+    Node even= new Node(-1);
+    Node ep=even;
+    Node curr=this.head;
+    while(curr!=null)
+    {
+        if(curr.val%2==0)
+        {
+            ep.next=curr;
+            ep=ep.next;
+        }
+        else{
+            op.next=curr;
+            op=op.next;
+        }
+        curr=curr.next;
+    }
+
+    op.next=even.next;
+    ep.next=null;
+
+    this.head=odd.next;
+
+    if(even.next!=null)
+    {
+        this.tail=ep;
+    }
+    else{
+        this.tail=op;
+    }
+
+}
+
+// Remove duplicates from sorted Linked List
+
+public Node distinctElement(Node head)
+{
+
+if(head==null||head.next==null)
+{
+    return head;
+}
+
+Node dummy =new Node(-1);
+Node tail=dummy;
+Node curr=head;
+Node prev=null;
+while(curr!=null)
+{
+    if(curr.val!=tail.val)
+    {
+        prev.next=null;
+        tail.next=curr;
+        tail=tail.next;
+    }
+    prev=curr;
+    curr=curr.next;
+}
+
+tail.next=null;
+
+return dummy.next;
+
+}
+
+// Reverse Linked List
+
+  public void reverseLL(ListNode head)
+  {
+ if(head==null||head.next==null)
+        {
+            return head;
+        }
+        
+        ListNode curr=head;
+        ListNode prev=null;
+        
+        while(curr!=null)
+        {
+            ListNode fwd=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=fwd;
+        }
+        
+        return prev;
+  }
+
 }
