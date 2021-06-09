@@ -4,18 +4,21 @@ public class client
 {
 
 
-public static void main(String []args)
+public static void main(String []args) throws Exception
 {
 
-LinkedList ll= new LinkedList();
 
-ll.addFirst(1);
-ll.addLast(2);
-ll.addAt(2,3);
-ll.addAt(1,4);
-ll.addAt(4,5);
-System.out.println(ll);
-System.out.print("\n"+ll.getSize());
+
+// queue q=new queue(6);
+
+// q.add(3);
+// q.add(4);
+// q.add(5);
+// q.add(8);
+// q.add(9);
+// q.add(3);
+
+// System.out.print(q);
 
 }
 

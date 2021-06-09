@@ -66,8 +66,8 @@ public class questions{
         
     }
 
-
-// segregate even and odd nodes                      CareFull when joining  odd and even linked lists
+ 
+// segregate even and odd nodes                     CareFull when joining  odd and even linked lists
 
 
     public void oddEven(Node head)
