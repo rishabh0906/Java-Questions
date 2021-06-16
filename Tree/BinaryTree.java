@@ -378,7 +378,163 @@ public static isBstPair checkBst(Node root)
       return self;
 
 }
+ // is Balanced =====================================================
 
+ public static boolean isBalanced1(Node root)
+ {
+     if(root==null)
+     {
+         return true;
+     }
+
+     int left =height(root.left);
+     int right=height(root.right);
+    
+
+return Math.abs(left-rigt)<=1&&isBalanced1(root.left)&&isBalanced1(root.right);
+
+ }
+//===============================================================
+ public static class Pair{
+
+int ht=-1;
+boolean isBal=true;
+
+ }
+
+ public static Pair isBalanced2(Node root)
+ {
+      if(root==null)
+      {
+          return new Pair();
+      }
+      Pair left =isBalanced2(root.left);
+      if(!left.isBal) return left;
+
+      Pair right=isBalanced2(root.right);
+
+      if(!right.isBal) return right;
+
+      Pair self=new Pair();
+      self.isBal=false;
+
+      if(Math.abs(left.ht-right.ht)<=1)
+      {
+          self.isBal=true;
+          self.ht=Math.max(left.ht,right.ht)+1;
+      }
+
+      return self;
+
+
+ }
+ //tilt of a binary tree =====================================================================
+    public class pair{
+        int tiltSoFar=0;
+        int SubtreeSum=0;
+    }
+    
+    public pair findTiltUti(TreeNode root)
+    {
+        if(root==null)
+        {
+            return new pair();
+        }
+        
+        pair left=findTiltUti(root.left);
+        pair right=findTiltUti(root.right);
+        
+        pair self= new pair();
+        
+        self.tiltSoFar=left.tiltSoFar+right.tiltSoFar+ Math.abs(left.SubtreeSum-right.SubtreeSum);
+        self.SubtreeSum= left.SubtreeSum+right.SubtreeSum+root.val;
+        
+        return self;
+    }
+//diameter of a binary tree ===================================================================================
+
+  public class pair{
+        
+        int maxSofar=0;
+        int height=-1;
+    }
+    
+    public pair diameterOfBinaryTreeUti(TreeNode root)
+    {
+        if(root==null)
+        {
+            return new pair();
+        }
+        
+        pair left= diameterOfBinaryTreeUti(root.left);
+        pair right=diameterOfBinaryTreeUti(root.right);
+        
+        pair self= new pair();
+        
+        self.maxSofar= Math.max(left.height+right.height+2,Math.max(left.maxSofar,right.maxSofar));
+        self.height =Math.max(left.height,right.height)+1;
+        
+        return self;
+    }
+
+    public static int diameterOfBinaryTreeUti_02(TreeNode root)
+    {
+        if(root==null)
+        {
+            return 0;
+        }
+
+        int ld =diameterOfBinaryTreeUti_02(root.left);
+        int rd=diameterOfBinaryTreeUti_02(root.right);
+
+        int lh= height(root.left);
+        int rh=height(root.right);
+
+             
+             return Math.max(Math.max(ld,rd),lh+rh+2);
+
+    }
+
+// max BST subtree ======================================================================
+
+public static class BST_info{
+
+boolean isBST =true;
+int max= -(int) 1e9;
+int min= (int) 1e9;
+int maxSize;
+Node MaxSizeNode;
+
+
+}
+
+public static BST_info findBstSubtree(Node root)
+{
+    if(root==null)
+    {
+        return new BST_info();
+    }
+
+    BST_info left=findBstSubtree(root.left);
+    BST_info right=findBstSubtree(root.right);
+
+    BST_info self= new BST_info();
+
+    if(left.isBST&&right.isBST && root.data>left.max&&root.data<right.min)
+    {
+        self.isBST=true;
+        self.max= Math.max(root.data,right.max);
+        self.min= Math.min(root.data,left.min);
+        self.maxSize=left.maxSize+right.maxSize+1;
+        self.MaxSizeNode=root;
+    }
+    else{
+        self.isBST=false;
+        self.maxSize=Math.max(left.maxSize,right.maxSize);
+        self.MaxSizeNode=left.maxSize>right.maxSize ? left.MaxSizeNode:right.MaxSizeNode;
+    }
+    return self;
+}
 
 
 
