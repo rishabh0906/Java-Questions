@@ -388,6 +388,45 @@ public static void hamiltonianCyclePath(ArrayList<Edge>[]graph,int n,int src)
    
 }
 
+public static void BFS(ArrayList<Edge> []graph,int src,int des,int n)
+{
+    boolean []vis=new boolean[n];
+    LinkedList<Integer> ll=new LinkedList<>();
+
+    ll.addLast(src);
+    vis[src]=true;
+int level=0;
+int shortest;
+boolean cycle=false;
+    while(ll.size()>0)
+    {
+        int size=ll.size();
+        while(size-->0)
+        {
+            Integer rvtx=ll.removeFirst();
+            if(vis[rvtx])
+            {
+                cycle=true;
+                continue;
+            }
+            if(src==des)
+            {
+             shortest=level;   
+            }
+            for(Edge v:graph[rvtx])
+            {
+                if(!vis[v.des])
+                {
+                    vis[v.des]=true;
+                    que.addLast(v.des);
+                }
+            }
+        }
+        level++;
+    }
+
+}
+
 public static void main(String []args)
 {
     int n=9;
