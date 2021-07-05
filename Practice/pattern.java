@@ -10,7 +10,7 @@ public static Scanner scn= new Scanner(System.in);
 int nst=n;
          for(int row=1;row<=n;row++)
          {
-             for(int cst=1;cst<=nst;cst++)
+             for(int cst=1;cst<=nst;cst++)             
              {
 System.out.print("*");
              }
