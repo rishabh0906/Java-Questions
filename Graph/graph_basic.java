@@ -228,7 +228,7 @@ public static class Pair_cf{
 }
 
 public static void ceilAndfloor(ArrayList<Edge>[]graph,int data,int src,boolean[]vis,Pair_cf cf,int wsf)
-{
+ {
 
 if(wsf>data)
 {
@@ -242,7 +242,7 @@ if(wsf<data)
 vis[src]=true;
 
 for(Edge e: graph[src])
-{
+  {
     if(!vis[e.des])
     {
         ceilAndfloor(graph,data,e.des,vis,cf,wsf+e.wt);
@@ -251,10 +251,10 @@ for(Edge e: graph[src])
 
 vis[src]=false;
 
-}
+ }
 
 public static Pair_cf ceilAndfloor(ArrayList<Edge> []graph,int data,int n)
-{
+ {
     Pair_cf pair=new Pair_cf();
 boolean[]vis= new boolean[n];
 ceilAndfloor(graph,data ,0, vis,pair,0);
@@ -278,7 +278,7 @@ public static void dfs(ArrayList<Edge>[]graph,int src,boolean[]vis)
 }
 //O(E+V)
 public static int getConnect(ArrayList<Edge> []graph,int n)
-{
+ {
 
 boolean[] vis =new  boolean[n];
 int count=0;
@@ -426,6 +426,124 @@ boolean cycle=false;
     }
 
 }
+//Cycle Detection 
+ public static boolean BFS(ArrayList<Edge> []graph,int n,int src,boolean[]vis)
+  {
+     
+      
+      LinkedList<Integer> ll= new LinkedList<>();
+      ll.addLast(src);
+      while(ll.size()>0)
+      {
+          int size=ll.size();
+          while(size-->0)
+          {
+              int front=(int) ll.removeFirst();
+              
+              if(vis[front])
+              {
+                  return true;
+              }
+              
+              vis[front]=true;
+              for(Edge e:graph[front])
+              {
+                  if(!vis[e.nbr])
+                  ll.addLast(e.nbr);
+              }
+              
+          }
+      }
+      return false;
+  }
+
+public static class path_info{
+
+    int vtx=0;
+    String psf="";
+    int wsf=0;
+
+    path_info(int vtx,String psf,int wsf)
+    {
+        this.vtx=vtx;
+        this.psf=psf;
+        this.wsf=wsf;
+    }
+}
+
+// print shortest Path
+public static void printPaths(ArrayList<Edge>[]graph,int n)
+{
+    boolean[] vis=new boolean[n];
+
+    for(int i=0;i<n;i++)
+    {
+        if(vis[i])continue;
+
+        LinkedList<path_info> ll=new LinkedList<>();
+
+        ll.addLast(new path_info(i,i+"",0));
+        while(ll.size()>0)
+        {
+            int size=ll.size();
+            while(size-->0)
+            {
+                path_info rp= ll.removeFirst();
+
+                if(vis[rp.vtx])
+                  continue;
+                
+                vis[rp.vtx]=true;
+                System.out.println(rp.vtx+"->"+rp.psf+"@"+rp.wsf);
+
+                for(Edge e:graph[rp.vtx])
+                {
+                    if(!vis[e.nbr])
+                    {
+                        ll.addLast(new path_info(e.des,rp.psf+e.des,rp.wsf+e.wt));
+                    }
+                }
+            }
+        }
+    }
+}
+
+ // bipartite Graph (carefull for not connected graph)
+  public static boolean BFS(ArrayList<Edge> []graph,int src,int []vis)
+   {
+       LinkedList<pair> ll =new LinkedList<>();
+       
+       ll.addLast(new pair(src,0));
+       
+       while(ll.size()>0)
+       {
+           int size=ll.size();
+           while(size-->0)
+           {
+               pair front= ll.removeFirst();
+               
+               if(vis[front.vtx]!=-1)
+               {
+                   if(vis[front.vtx]!=front.level)
+                   {
+                       return false;
+                   }
+                   continue;
+               }
+               
+               vis[front.vtx]=front.level;
+               
+               for(Edge e: graph[front.vtx])
+               {
+                   if(vis[e.nbr]==-1)
+                   {
+                       ll.addLast(new pair(e.nbr,(front.level+1)%2));
+                   }
+               }
+           }
+       }
+       return true;
+   }
 
 public static void main(String []args)
 {
