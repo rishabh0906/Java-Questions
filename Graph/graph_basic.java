@@ -418,7 +418,7 @@ boolean cycle=false;
                 if(!vis[v.des])
                 {
                     vis[v.des]=true;
-                    que.addLast(v.des);
+                    ll.addLast(v.des);
                 }
             }
         }
@@ -448,8 +448,8 @@ boolean cycle=false;
               vis[front]=true;
               for(Edge e:graph[front])
               {
-                  if(!vis[e.nbr])
-                  ll.addLast(e.nbr);
+                  if(!vis[e.des])
+                  ll.addLast(e.des);
               }
               
           }
@@ -498,7 +498,7 @@ public static void printPaths(ArrayList<Edge>[]graph,int n)
 
                 for(Edge e:graph[rp.vtx])
                 {
-                    if(!vis[e.nbr])
+                    if(!vis[e.des])
                     {
                         ll.addLast(new path_info(e.des,rp.psf+e.des,rp.wsf+e.wt));
                     }
@@ -509,65 +509,67 @@ public static void printPaths(ArrayList<Edge>[]graph,int n)
 }
 
  // bipartite Graph (carefull for not connected graph)
-  public static boolean BFS(ArrayList<Edge> []graph,int src,int []vis)
-   {
-       LinkedList<pair> ll =new LinkedList<>();
+//   public static boolean BFS(ArrayList<Edge> []graph,int src,int []vis)
+//    {
+//        LinkedList<pair> ll =new LinkedList<>();
        
-       ll.addLast(new pair(src,0));
+//        ll.addLast(new pair(src,0));
        
-       while(ll.size()>0)
-       {
-           int size=ll.size();
-           while(size-->0)
-           {
-               pair front= ll.removeFirst();
+//        while(ll.size()>0)
+//        {
+//            int size=ll.size();
+//            while(size-->0)
+//            {
+//                pair front= ll.removeFirst();
                
-               if(vis[front.vtx]!=-1)
-               {
-                   if(vis[front.vtx]!=front.level)
-                   {
-                       return false;
-                   }
-                   continue;
-               }
+//                if(vis[front.vtx]!=-1)
+//                {
+//                    if(vis[front.vtx]!=front.level)
+//                    {
+//                        return false;
+//                    }
+//                    continue;
+//                }
                
-               vis[front.vtx]=front.level;
+//                vis[front.vtx]=front.level;
                
-               for(Edge e: graph[front.vtx])
-               {
-                   if(vis[e.nbr]==-1)
-                   {
-                       ll.addLast(new pair(e.nbr,(front.level+1)%2));
-                   }
-               }
-           }
-       }
-       return true;
-   }
+//                for(Edge e: graph[front.vtx])
+//                {
+//                    if(vis[e.nbr]==-1)
+//                    {
+//                        ll.addLast(new pair(e.nbr,(front.level+1)%2));
+//                    }
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
 public static void main(String []args)
 {
     int n=9;
     ArrayList<Edge> edges=new ArrayList<>();
 
-edges.add(new Edge(0,1,1));
-edges.add(new Edge(0,3,1));
-edges.add(new Edge(3,2,1));
-edges.add(new Edge(2,1,1));
-edges.add(new Edge(1,5,1));
-edges.add(new Edge(4,0,1));
-edges.add(new Edge(2,8,1));
-edges.add(new Edge(5,8,1));
-edges.add(new Edge(5,6,1));
-edges.add(new Edge(8,7,1));
-edges.add(new Edge(6,7,1));
+edges.add(new Edge(0,1,10));
+edges.add(new Edge(0,3,14));
+edges.add(new Edge(3,2,2));
+edges.add(new Edge(2,1,139));
+edges.add(new Edge(1,5,20));
+edges.add(new Edge(4,0,50));
+edges.add(new Edge(2,8,5));
+edges.add(new Edge(5,8,5));
+edges.add(new Edge(5,6,32));
+edges.add(new Edge(8,7,45));
+edges.add(new Edge(6,7,32));
 
 ArrayList<Edge> []graph=Graph(n,edges);
 boolean []vis=new boolean[n];
 // display(graph,n);
 //System.out.println(printAllPaths(graph,0,8,vis,0,""));
 // preorder(graph,vis,0,"",0);
-hamiltonianCyclePath(graph,n,0);
+// hamiltonianCyclePath(graph,n,0);
+Pair ans=heaviestWeight(graph,0,8,vis);
+System.out.println(ans.path+"@"+ans.wt);
 }
 
 
