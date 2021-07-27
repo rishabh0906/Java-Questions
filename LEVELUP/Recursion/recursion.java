@@ -388,28 +388,109 @@ int count=0;
      return ans;
    }
 
-   public static int boardPath(int[] arr, int n, String ans) {
+   public static int boardPath(int[] arr, int n, String asf,ArrayList<String> ans) {
+            
+            if(n==0)
+            {
+              ans.add(asf);
+                return 1;
+            }
+           
+           int count=0;
+            for(int i=0;i<arr.length;i++)
+            {
+              if(n-arr[i]>=0)
+              {
+                  count+=boardPath(arr,n-arr[i],asf+arr[i],ans);
+              }
+            }
 
+            return count;
      
    }
 
-  // public static int mazePath_HVD(
-  //   int sr,
-  //   int sc,
-  //   int er,
-  //   int ec,
-  //   String psf,
-  //   ArrayList<String> ans
-  // ) {}
+  public static int mazePath_HVD(int sr,int sc,int er,int ec,String psf,ArrayList<String> ans) {
 
-  // public static int mazePath_HVD_multi(
-  //   int sr,
-  //   int sc,
-  //   int er,
-  //   int ec,
-  //   String psf,
-  //   ArrayList<String> ans
-  // ) {}
+            if(sr==er&&sc==ec)
+            {
+              ans.add(psf);
+              return 1;
+            }
+
+            int count=0;
+          if(sr+1<=er)
+          {
+            count+=mazePath_HVD(sr+1,sc,er,ec,psf+"V",ans);
+          }
+
+          if(sc+1<=ec)
+          {
+            count+=mazePath_HVD(sr,sc+1,er,ec,psf+"H",ans);
+          }
+          if(sr+1<=er&&sc+1<=ec)
+          {
+            count+=mazePath_HVD(sr+1,sc+1,er,ec,psf+"D",ans);
+          }
+
+          return count;
+  }
+
+  public static int mazePath_HVD_multi(int sr,int sc,int er,int ec,String psf,ArrayList<String> ans) {
+            if(sr==er&&sc==ec)
+            {
+              ans.add(psf);
+              return 1;
+            }
+
+            int count=0;
+
+            for(int i=1;sr+i<=er;i++)
+                count+=mazePath_HVD_multi(sr+i,sc,er,ec,psf+i+"V",ans);
+
+           for(int i=1;sc+i<=ec;i++)
+            count+=mazePath_HVD_multi(sr,sc+i,er,ec,psf+i+"H",ans);
+  
+          for(int i=1;sr+i<=er&&sc+i<=ec;i++)
+            count+=mazePath_HVD_multi(sr+i,sc+i,er,ec,psf+i+"D",ans);
+          
+
+          return count;
+
+  }
+
+
+   public static int mazePath_HVD_multi(int sr, int sc, int er, int ec, String psf, ArrayList<String> ans, int[][] dir,
+            String[] dirS) {
+        if (sr == er && sc == ec) {
+            ans.add(psf);
+            return 1;
+        }
+
+        int count = 0;
+        for (int d = 0; d < dir.length; d++) {
+            for (int rad = 1; rad <= Math.max(er, ec); rad++) {
+                int r = sr + rad * dir[d][0];
+                int c = sc + rad * dir[d][1];
+
+                if (r >= 0 && c >= 0 && r <= er && c <= ec) {
+                    count += mazePath_HVD_multi(r, c, er, ec, psf + dirS[d] + rad, ans, dir, dirS);
+                } else
+                    break;
+            }
+        }
+
+        return count;
+    }
+
+    public static void mazePath() {
+        int[][] dir = { { 0, 1 }, { 1, 0 }, { 1, 1 } };
+        String[] dirS = { "H", "V", "D" };
+
+        ArrayList<String> ans = new ArrayList<>();
+        System.out.println(mazePath_HVD_multi(0, 0, 2, 2, "", ans, dir, dirS));
+
+        System.out.println(ans);
+    }
 
   public static void main(String[] args) {
     int[] arr = { 2, 3, 4, 6, 3, 4, 5, 1 };
@@ -455,9 +536,9 @@ int count=0;
 
     ArrayList<String> ans=new ArrayList<>();
 
-   int count= boardPath(10,"",ans);
+   int count= mazePath_HVD_multi(1,1,5,5,"",ans);
     System.out.println(ans +""+ count);
 
-    System.out.println(boardPath2(10));
+    
   }
 }
