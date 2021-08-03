@@ -320,6 +320,39 @@ public static int queenPermutation2D(boolean [][]box,int q,String asf)
     return count;
 }
 
+public static int queenPermutation2D_sub(boolean [][]box,int q,int bsf,String asf)
+{
+    int n= box.length;
+    int m= box[0].length;
+    if(q==0)
+    {
+ System.out.println(asf);
+ return 1;
+    }
+    if(bsf==n*m)
+    {
+        return 0;
+    }
+
+
+    int count=0;
+    
+
+    int r=bsf/m;
+    int c= bsf%m;
+
+    if(box[r][c]==false)
+    {
+        box[r][c]=true;
+    count+=queenPermutation2D_sub(box,q-1,0,asf+"("+r+","+c+") ");
+    box[r][c]=false;
+    }
+    count+=queenPermutation2D_sub(box,q,bsf+1,asf);
+    return count;
+
+
+}
+
 public static int queenCombination2D(boolean [][]box,int q,int bsf,String asf)
 {
     if(q==0)
@@ -344,12 +377,42 @@ public static int queenCombination2D(boolean [][]box,int q,int bsf,String asf)
     return count;
 }
 
+
+public static int queenCombination2D_sub(boolean [][]box,int q,int bsf,String asf)
+{
+    int n= box.length;
+    int m= box[0].length;
+    if(q==0)
+    {
+ System.out.println(asf);
+ return 1;
+    }
+    if(bsf==n*m)
+    {
+        return 0;
+    }
+
+
+    int count=0;
+    
+
+    int r=bsf/m;
+    int c= bsf%m;
+
+    count+=queenCombination2D_sub(box,q-1,bsf+1,asf+"("+r+","+c+") ");
+    count+=queenCombination2D_sub(box,q,bsf+1,asf);
+
+    return count;
+
+
+}
+
 public static void queen2D()
 {
 int n=4;
 boolean [][]box= new boolean[n][n];
-queenPermutation2D(box,n,"");
-queenCombination2D(box, n,0,"");
+// queenPermutation2D(box,n,"");
+queenPermutation2D_sub(box, n,0,"");
 
 }
 

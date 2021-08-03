@@ -22,7 +22,14 @@ Infinite Coin Combination  (ncr method , subsequence method)
 Infinite Coin Permutation (ncr method , subsequence method)
 Limited Coin Combination (ncr method , subsequence method)
 Limited Coin Permutation (ncr method , subsequence method)
-N Queen 1D Combination  (ncr method , subsequence method)
-N Queen 1D Permutation   (ncr method , subsequence method)
-N Queen 2D Combination  (ncr method , subsequence method)
-N Queen 2D Permutation   (ncr method , subsequence method)
+N Queen Place 1D Combination  (ncr method , subsequence method)
+N Queen  Place 1D Permutation   (ncr method , subsequence method)
+N Queen Place 2D Combination  (ncr method , subsequence method)
+N Queen Place 2D Permutation   (ncr method , subsequence method)
+N Queen Place of n*n ChessBoard Combination (no two  queen cut each other)
+N Queen Place of n*n ChessBoard Permutation (no two queen cut each other)
+N Queen Place of n*n ChessBoard Combination (no two  queen cut each other) Optimize 1
+N Queen Place of n*n ChessBoard Permutation (no two queen cut each other)  Optimize 1
+Word Break 
+greatest Number after  atmost k adjancent swaps
+
