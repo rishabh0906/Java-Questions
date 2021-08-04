@@ -227,6 +227,44 @@ count+=NQueen_03_Permutation(n,m,floor+1,q,asf);
 return count;
 
 }
+///  N Queen  Using Bits Manipulation 
+static int colMask=0 , diagMask=0, antiMask=0;
+
+public static int NQueen_04_Combination(int n,int m,int floor,int q,String asf)
+{
+if(q==0)
+{
+    System.out.println(asf);
+    return 1;
+}
+
+if(floor >=n)
+{
+    return 0;
+}
+
+int count=0;
+for(int room=0;room<m;room++)
+{
+    int r=floor;
+    int c=room;
+
+    if((colMask&(1<<c))==0&&(diagMask&(1<<(r+c)))==0&&(antiMask&(1<<(r-c+n-1)))==0)
+    {
+        colMask^=(1<<c);
+        diagMask^=(1<<(r+c));
+        antiMask^=(1<<(r-c+n-1));
+        count+=NQueen_04_Combination(n,m,floor+1,q-1,asf+"("+r+","+c+") ");
+      colMask^=(1<<c);
+        diagMask^=(1<<(r+c));
+        antiMask^=(1<<(r-c+n-1));
+
+    }
+}
+
+return count;
+
+}
 
 public static void main(String[]args)
 {

@@ -40,6 +40,29 @@ int count=0;
     return count;
 }
 
+   public static int missingNumber(int[] nums) {
+     
+        int Xor=0;
+        int XorAr=0;
+        for(int i=1;i<=nums.length;i++)
+        {
+            
+            XorAr^=nums[i-1];
+            Xor^=i;
+        }
+        return Xor^XorAr;
+    }
+
+    public static int missingNumber_02 (int []nums)
+    {
+        int sum=0;
+        for(int ele:nums)
+        sum+=ele;
+         
+         return (nums.length*(nums.length+1))/2-sum;
+
+    }
+
 public static void main(String []args)
 {
 
