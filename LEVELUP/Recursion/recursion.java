@@ -507,7 +507,7 @@ int count=0;
     // printArrayReverse(arr,0);
     // System.out.println();
 
-    // System.out.println(maximum(arr,0));
+     System.out.println(maximum(arr,0));
 
     // System.out.println( minimum(arr,0));
 

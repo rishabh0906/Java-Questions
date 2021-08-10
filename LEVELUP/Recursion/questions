@@ -32,4 +32,7 @@ N Queen Place of n*n ChessBoard Combination (no two  queen cut each other) Optim
 N Queen Place of n*n ChessBoard Permutation (no two queen cut each other)  Optimize 1
 Word Break 
 greatest Number after  atmost k adjancent swaps
+k Partition 
+Sudoku Solver ( simple , bits)
+valid Sudoku
 
