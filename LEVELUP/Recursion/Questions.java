@@ -288,6 +288,7 @@ public class Questions {
 
     }
 
+    // two subsets with equal Sum
     public static int equalSet(int[] arr, int idx, int sum1, int sum2, String str1, String str2) {
 
         if (idx == arr.length) {
@@ -333,9 +334,10 @@ public class Questions {
 
     public static void equalSet_02(int[] arr) {
 
+        int k = 2;
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < k; i++) {
             ans.add(new ArrayList<>());
         }
 
@@ -343,20 +345,260 @@ public class Questions {
         for (int ele : arr) {
             sum += ele;
         }
-        if ((sum & 1) != 0) {
+        if ((sum % k) != 0) {
             return;
         }
 
-        solve_02(arr, 0, sum / 2, ans);
+        solve_02(arr, 0, sum / k, ans);
 
+    }
+
+    // Ksubsets with Equal Sum ==========================================//
+    public static int Ksubsets(int[] arr, int idx, int k, int sum, int[] ksums, ArrayList<ArrayList<Integer>> ans) {
+
+        if (idx == arr.length) {
+
+            for (int i = 0; i < k; i++) {
+                if (ksums[i] != sum)
+                    return 0;
+            }
+            System.out.println(ans);
+            return 1;
+
+        }
+
+        int count = 0;
+
+        for (int i = 0; i < k; i++) {
+
+            if (ksums[i] == 0) {
+                ksums[i] += arr[idx];
+                ans.get(i).add(arr[idx]);
+                count += Ksubsets(arr, idx + 1, k, sum, ksums, ans);
+                ksums[i] -= arr[idx];
+                ans.get(i).remove(ans.get(i).size() - 1);
+                break;
+            } else {
+                if (ksums[i] + arr[idx] <= sum) {
+                    ans.get(i).add(arr[idx]);
+                    ksums[i] += arr[idx];
+                    count += Ksubsets(arr, idx + 1, k, sum, ksums, ans);
+                    ans.get(i).remove(ans.get(i).size() - 1);
+                    ksums[i] -= arr[idx];
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static void Ksubsets(int[] arr, int k) {
+
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+
+        int sum = 0;
+        for (int ele : arr) {
+            sum += ele;
+        }
+
+        if (sum % k != 0)
+            return;
+
+        for (int i = 0; i < k; i++) {
+            ans.add(new ArrayList<>());
+        }
+        int[] ksums = new int[k];
+
+        Ksubsets(arr, 0, k, sum / k, ksums, ans);
+
+    }
+
+    public static int Counter = 1;
+
+    public static void solution(int i, int n, int k, int rssf, ArrayList<ArrayList<Integer>> ans) {
+
+        if (i == n + 1) {
+            if (rssf == k) {
+                System.out.print(Counter + ". ");
+                Counter++;
+                for (int idx = 0; idx < k; idx++) {
+                    System.out.print(ans.get(idx) + " ");
+                }
+                System.out.println();
+
+            }
+            return;
+        }
+
+        for (int idx = 0; idx < k; idx++) {
+
+            if (ans.get(idx).size() == 0) {
+                ans.get(idx).add(i);
+                solution(i + 1, n, k, rssf + 1, ans);
+                ans.get(idx).remove(ans.get(idx).size() - 1);
+                break;
+            } else {
+                ans.get(idx).add(i);
+                solution(i + 1, n, k, rssf, ans);
+                ans.get(idx).remove(ans.get(idx).size() - 1);
+
+            }
+        }
+
+    }
+
+    // CrossWord Puzzle ===================================//
+
+    static char[][] box = { { '+', '-', '+', '+', '+', '+', '+', '+', '+', '+' },
+            { '+', '-', '+', '+', '+', '+', '+', '+', '+', '+' }, { '+', '-', '-', '-', '-', '-', '-', '-', '+', '+' },
+            { '+', '-', '+', '+', '+', '+', '+', '+', '+', '+' }, { '+', '-', '+', '+', '+', '+', '+', '+', '+', '+' },
+            { '+', '-', '-', '-', '-', '-', '-', '+', '+', '+' }, { '+', '-', '+', '+', '+', '-', '+', '+', '+', '+' },
+            { '+', '+', '+', '+', '+', '-', '+', '+', '+', '+' }, { '+', '+', '+', '+', '+', '-', '+', '+', '+', '+' },
+            { '+', '+', '+', '+', '+', '+', '+', '+', '+', '+' } };
+
+    static String[] words = { "agra", "norway", "england", "gwalior" };
+
+    public static boolean isSafeH(int r, int c, String word) {
+
+        int left = c - 1;
+        while (left >= 0 && box[r][left] != '+') {
+            left--;
+        }
+        int right = c + 1;
+        while (right < 10 && box[r][right] != '+') {
+            right++;
+        }
+        int lc = left + 1;
+        int rc = right - 1;
+
+        if (rc - lc + 1 != word.length())
+            return false;
+
+        for (int i = 0; i < word.length(); i++) {
+            if (box[r][lc + i] != '-' && box[r][lc + i] != word.charAt(i))
+                return false;
+        }
+
+        return true;
+
+    }
+
+    public static int placeV(int r, int c, String word) {
+
+        int loc = 0;
+        for (int i = 0; i < word.length(); i++) {
+
+            if (box[r + i][c] == '-') {
+                loc ^= (1 << i);
+                box[r + i][c] = word.charAt(i);
+            }
+        }
+        return loc;
+
+    }
+
+    public static void unplaceV(int r, int c, int loc, String word) {
+        for (int i = 0; i < word.length(); i++) {
+
+            if ((loc & (1 << i)) != 0) {
+                loc ^= (1 << i);
+                box[r + i][c] = '-';
+
+            }
+        }
+    }
+
+    public static boolean isSafeV(int r, int c, String word) {
+        int top = r - 1;
+        while (top >= 0 && box[top][c] != '+') {
+            top--;
+        }
+        int bottom = r + 1;
+        while (bottom < 10 && box[bottom][c] != '+') {
+            bottom++;
+        }
+        int lr = top + 1;
+        int rr = bottom - 1;
+
+        if (rr - lr + 1 != word.length())
+            return false;
+
+        for (int i = 0; i < word.length(); i++) {
+            if (box[lr+i][c] != '-' && box[lr+i][c] != word.charAt(i))
+                return false;
+        }
+
+        return true;
+    }
+
+    public static int placeH(int r, int c, String word) {
+        int loc = 0;
+        for (int i = 0; i < word.length(); i++) {
+
+            if (box[r][c + i] == '-') {
+                loc ^= (1 << i);
+                box[r][c + i] = word.charAt(i);
+
+            }
+        }
+        return loc;
+    }
+
+    public static void unplaceH(int r, int c, int loc, String word) {
+        for (int i = 0; i < word.length(); i++) {
+
+            if ((loc & (1 << i)) != 0) {
+                loc ^= (1 << i);
+                box[r][c + i] = '-';
+
+            }
+        }
+    }
+
+    public static boolean CrossWord(int index) {
+
+        if (index == words.length) {
+
+            return true;
+        }
+
+        String word = words[index];
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+
+                if (isSafeH(i, j, word)) {
+                    int loc = placeH(i, j, word);
+                    if (CrossWord(index + 1))
+                        return true;
+                    unplaceH(i, j, loc, word);
+                }
+                if (isSafeV(i, j, word)) {
+                    int loc = placeV(i, j, word);
+                    if (CrossWord(index + 1))
+                        return true;
+                    unplaceV(i, j, loc, word);
+                }
+            }
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
 
-        int[] arr = { 10, 20, 30, 40, 50, 60, 70, 80 };
+        int[] arr = { 1, 2, 3, 4, 5, 6 };
 
-        // int ans = equalSet(arr, 1, 10, 0, "10", "");
-        equalSet_02(arr);
+        // // int ans = equalSet(arr, 1, 10, 0, "10", "");
+        // equalSet_02(arr);
+       CrossWord(0);
+     
+       for(int i=0;i<10;i++){
+        for(int j=0;j<10;j++){
+            System.out.print(box[i][j]+" ");
+        }
+        System.out.println();
+    }
 
     }
 
