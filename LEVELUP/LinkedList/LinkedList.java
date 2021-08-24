@@ -6,7 +6,7 @@ public class LinkedList {
 
         int val = 0;
         ListNode next = null;
-        ListNode random=null;
+        ListNode random = null;
 
         ListNode(int val) {
 
@@ -599,54 +599,174 @@ public class LinkedList {
 
         return reverse(previntermediateList);
     }
-    public static ListNode AttachCloneNodes(ListNode head){
-       
-        ListNode curr=head;
 
-        while(curr!=null){
+    public static ListNode AttachCloneNodes(ListNode head) {
 
-            ListNode clone =new ListNode(curr.val);
-            ListNode next=curr.next;
-            curr.next=clone;
-            clone.next=next;
-            curr=next;
+        ListNode curr = head;
+
+        while (curr != null) {
+
+            ListNode clone = new ListNode(curr.val);
+            ListNode next = curr.next;
+            curr.next = clone;
+            clone.next = next;
+            curr = next;
         }
 
         return head;
-      
 
     }
 
-    public static ListNode DetachCloneNodes(ListNode head){
-           
-        ListNode dummy=new ListNode(-1);
-        ListNode prev=dummy;
-        ListNode curr=head;
-        while(curr!=null){
-            ListNode clone=curr.next;
-            ListNode next=clone.next;
-            clone.next=null;
-            prev.next=clone;
-            prev=prev.next;
-            curr=next;
+    public static ListNode DetachCloneNodes(ListNode head) {
+
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode clone = curr.next;
+            ListNode next = clone.next;
+            clone.next = null;
+            prev.next = clone;
+            prev = prev.next;
+            curr = next;
         }
         return dummy.next;
     }
-    public static ListNode CloneListWithRandomPointers(ListNode head){
-           if(head==null) return null;
 
-           head=AttachCloneNodes(head);
+    public static ListNode CloneListWithRandomPointers(ListNode head) {
+        if (head == null)
+            return null;
 
-           ListNode curr=head;
-           while(curr!=null){
-                 if(curr.random!=null)
-                  curr.next.random=curr.random.next;
-            curr=curr.next.next;
-           }
+        head = AttachCloneNodes(head);
 
-           ListNode newHead=DetachCloneNodes(head);
+        ListNode curr = head;
+        while (curr != null) {
+            if (curr.random != null)
+                curr.next.random = curr.random.next;
+            curr = curr.next.next;
+        }
 
-           return newHead;
+        ListNode newHead = DetachCloneNodes(head);
+
+        return newHead;
 
     }
+
+    // 141 Cycle
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null)
+            return false;
+
+        ListNode slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+
+    // 142
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
+
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow)
+                break;
+        }
+
+        if (slow != fast)
+            return null;
+
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
+    }
+
+    // 160
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null)
+            return null;
+
+        ListNode tail = headA;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+
+        tail.next = headB;
+
+        ListNode ans = detectCycle(headA);
+
+        tail.next = null;
+
+        return ans;
+    }
+
+    // All Variable
+    public int getCycleLen(ListNode mp) {
+        int cycleLen = 1;
+        ListNode curr = mp.next;
+
+        while (curr != mp) {
+            curr = curr.next;
+            cycleLen++;
+        }
+
+        return cycleLen;
+    }
+
+    public ListNode cycleVariable(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
+
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow)
+                break;
+        }
+
+        if (slow != fast)
+            return null;
+
+        slow = head;
+        ListNode mp = fast; // meetingPoint
+        int cycleCount = 0;
+        int A = 0;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+
+            if (mp == fast)
+                cycleCount++;
+            A++;
+        }
+
+        int cycleLen = getCycleLen(mp);
+        int m, C = 0, B;
+        if (A != 0 && A % cycleLen == 0) {
+            m = cycleCount - 1;
+            B = cycleLen;
+        } else {
+            m = cycleCount + 1;
+            C = A - cycleCount * cycleLen;
+            B = cycleLen - C;
+        }
+
+        return slow;
+    }
+
 }
