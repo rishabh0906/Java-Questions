@@ -272,9 +272,10 @@ public class LinkedList {
     public static int length(ListNode head) {
 
         int len = 0;
-        while (head != null) {
+        ListNode curr = head;
+        while (curr != null) {
             len++;
-            head = head.next;
+            curr = curr.next;
         }
 
         return len;
@@ -767,6 +768,86 @@ public class LinkedList {
         }
 
         return slow;
+    }
+
+    public static ListNode getTail(ListNode head, int pvt) {
+
+        ListNode curr = head;
+        while (pvt-- > 0) {
+            curr = curr.next;
+        }
+
+        return curr;
+    }
+
+    public static ListNode[] Segregate(ListNode head, int pvt) {
+
+        if (head == null || head.next == null)
+            return new ListNode[] { null, head, null };
+
+        ListNode pivot = getTail(head, pvt);
+
+        ListNode curr = head;
+        ListNode smaller = new ListNode(-1), greater = new ListNode(-1);
+        ListNode smallTail = smaller, greatTail = greater;
+
+        while (curr != null) {
+
+            ListNode next = curr.next;
+            curr.next = null;
+            if (curr != pivot && curr.val <= pivot.val) {
+
+                smallTail.next = curr;
+                smallTail = smallTail.next;
+            } else if (curr != pivot) {
+                greatTail.next = curr;
+                greatTail = greatTail.next;
+            }
+            curr = next;
+        }
+
+        return new ListNode[] { smaller.next, pivot, greater.next };
+
+    }
+
+    public static ListNode[] mergeList(ListNode[] left, ListNode mid, ListNode[] right) {
+         
+    
+        ListNode fh = null, ft = null;
+
+        if (left[0] != null && right[0] != null) {
+
+            fh = left[0];
+            left[1].next = mid;
+            mid.next = right[0];
+            ft = right[1];
+        } else if (left[0] == null && right[0] != null) {
+            fh = mid;
+            mid.next = right[0];
+            ft = right[1];
+        } else if (left[0] != null && right[0] == null) {
+            fh = left[0];
+            left[1].next = mid;
+            ft = mid;
+
+        }
+
+        return new ListNode[] { fh, ft };
+
+    }
+
+    public static ListNode[] QuickSort(ListNode head) {
+
+        if (head == null || head.next == null)
+            return new ListNode[] { head, head };
+
+        int len = length(head);
+        ListNode[] Nodes = Segregate(head, len / 2);
+
+        ListNode[] left = QuickSort(Nodes[0]);
+        ListNode[] right = QuickSort(Nodes[2]);
+
+        return mergeList(left, Nodes[1], right);
     }
 
 }
