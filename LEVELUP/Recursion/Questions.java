@@ -588,9 +588,8 @@ public class Questions {
     public static void main(String[] args) {
 
         int[] arr = { 1, 2, 3, 4, 5, 6 };
-
-        // // int ans = equalSet(arr, 1, 10, 0, "10", "");
-        // equalSet_02(arr);
+         equalSet(arr, 1, 10, 0, "10", "");
+        equalSet_02(arr);
        CrossWord(0);
      
        for(int i=0;i<10;i++){
