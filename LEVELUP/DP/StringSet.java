@@ -1,7 +1,6 @@
 
 import java.util.*;
-
-import javax.lang.model.util.ElementScanner14;
+import java.util.List;
 
 public class StringSet {
 
@@ -278,6 +277,194 @@ public class StringSet {
         WildcardMatch(s, t, n, m, dp);
 
         return dp[n][m] == 0 ? false : true;
+    }
+
+    // Longest Pallindromic Substring
+    public static void LongestPallindromicSubstring(String str) {
+        int n = str.length();
+        boolean[][] dp = new boolean[n][n];
+
+        int countSubstring = 0;
+        int MaxLenSubstring = 0;
+        String res = "";
+        for (int gap = 0; gap < n; gap++) {
+            for (int i = 0, j = gap; j < n; i++, j++) {
+                if (gap == 0) {
+                    dp[i][j] = true;
+
+                } else if (gap == 1 && str.charAt(i) == str.charAt(j)) {
+                    dp[i][j] = true;
+
+                } else if (str.charAt(i) == str.charAt(j) && dp[i + 1][j - 1]) {
+                    dp[i][j] = true;
+
+                }
+
+                if (dp[i][j] == true) {
+                    countSubstring++;
+                    if (MaxLenSubstring < j - i + 1) {
+                        MaxLenSubstring = j - i + 1;
+                        res = str.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+        System.out.println(countSubstring + " " + MaxLenSubstring + " " + res);
+
+    }
+
+    public static int LongestCommonSubstring(String str1, String str2) {
+
+        int n = str1.length();
+        int m = str2.length();
+        int[][] dp = new int[n][m];
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                if (str1.charAt(i) == str2.charAt(j)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    ans = Math.max(ans, dp[i][j]);
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        return ans;
+
+    }
+
+    // Leetcode 139
+
+    public static boolean WordBreak(String str, List<String> wordDict) {
+
+        HashSet<String> st = new HashSet<>();
+
+        int maxLen = 0;
+        for (String e : wordDict) {
+            st.add(e);
+            maxLen = Math.max(e.length(), maxLen);
+        }
+
+        boolean[] dp = new boolean[str.length() + 1];
+
+        dp[0] = true;
+        for (int i = 0; i <= str.length(); i++) {
+            if (!dp[i])
+                continue;
+
+            for (int l = 1; l <= maxLen && l + i <= str.length(); l++) {
+
+                String s = str.substring(i, i + l);
+
+                if (st.contains(s)) {
+                    dp[i + l] = true;
+                }
+            }
+        }
+
+        return dp[str.length()];
+    }
+
+    public static void GoldMine_reverseEngg(int[][] dp, int sr, int sc, int[][] dir, String asf) {
+
+        if (sc == 0) {
+            System.out.println("(" + sr + ", " + sc + ") " + asf);
+            return;
+        }
+        int idx = -1;
+        int MaxGold = 0;
+        for (int i = 0; i < dir.length; i++) {
+
+            int r = sr + dir[i][0];
+            int c = sc + dir[i][1];
+
+            if (r >= 0 && c >= 0 && r < dp.length && c < dp[0].length && dp[r][c] > MaxGold) {
+                MaxGold = dp[r][c];
+                idx = i;
+            }
+
+        }
+
+        if (idx != -1) {
+
+            int r = sr + dir[idx][0];
+            int c = sc + dir[idx][1];
+
+            GoldMine_reverseEngg(dp, r, c, dir, "(" + sr + ", " + sc + ") " + asf);
+        }
+
+    }
+
+    public static int maxGold(int n, int m, int M[][]) {
+        for (int i = 1; i < m; i++) {
+
+            for (int j = 0; j < n; j++) {
+
+                int GoldSoFar = M[j][i - 1];
+
+                if (j > 0 && M[j - 1][i - 1] > GoldSoFar) {
+                    GoldSoFar = M[j - 1][i - 1];
+                }
+                if (j < n - 1 && M[j + 1][i - 1] > GoldSoFar) {
+                    GoldSoFar = M[j + 1][i - 1];
+                }
+
+                M[j][i] += GoldSoFar;
+            }
+        }
+        /*
+         * 1 5 8 2 3 12 0 8 12 12
+         * 
+         */
+
+        int res = 0;
+        int idx = -1;
+        for (int i = 0; i < n; i++) {
+
+            if (M[i][m - 1] > res) {
+                res = M[i][m - 1];
+                idx = i;
+            }
+        }
+        int[][] dir = { { 0, -1 }, { -1, -1 }, { 1, -1 } };
+        GoldMine_reverseEngg(M, idx, m - 1, dir, "");
+
+        return res;
+
+    }
+
+    public static String lpss_backEng(String str, int si, int ei, int[][] dp) {
+        if (si >= ei) {
+            return si == ei ? str.charAt(si) + "" : "";
+        }
+
+        if (str.charAt(si) == str.charAt(ei)) {
+            return str.charAt(si) + lpss_backEng(str, si + 1, ei - 1, dp) + str.charAt(ei);
+        } else if (dp[si + 1][ei] > dp[si][ei - 1]) {
+            return lpss_backEng(str, si + 1, ei, dp);
+        } else {
+            return lpss_backEng(str, si, ei - 1, dp);
+        }
+    }
+
+    public void wordBreak_backEngg(String s, int idx, boolean[] dp, int maxLen, List<String> wordDict,
+            HashSet<String> set, String ssf, List<String> ans) {
+        if (idx >= s.length()) {
+            ans.add(ssf.substring(0, ssf.length() - 1));
+            return;
+        }
+
+        for (int l = 1; l <= maxLen && idx + l <= s.length(); l++) {
+            if (dp[idx + l]) {
+                String substr = s.substring(idx, idx + l);
+                if (set.contains(substr)) {
+                    wordBreak_backEngg(s, idx + l, dp, maxLen, wordDict, set, ssf + substr + " ", ans);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
