@@ -31,7 +31,7 @@ public class rec_bu {
         return count;
     }
 
-    public static String[] map = { ".;","","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz", "+-*", "<>/" };
+    public static String[] map = { ".;", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz", "+-*", "<>/" };
 
     public static int keypad(String str, String ans) {
         if (str.length() == 0) {
@@ -60,9 +60,9 @@ public class rec_bu {
         if (sr + 1 <= dr) {
             count += mazePath(sr + 1, sc, dr, dc, ans + "v");
         }
-        // if (sr + 1 <= dr && sc + 1 <= dc) {
-        //     count += mazePath(sr + 1, sc + 1, dr, dc, ans + "d");
-        // }
+        if (sr + 1 <= dr && sc + 1 <= dc) {
+        count += mazePath(sr + 1, sc + 1, dr, dc, ans + "d");
+        }
         return count;
     }
 
@@ -150,6 +150,38 @@ public class rec_bu {
         return count;
     }
 
+    public static int DecodeWays(String str, int idx, String ans) {
+
+        if (idx == str.length()) {
+            System.out.println(ans);
+
+            return 1;
+        }
+
+        if (str.charAt(idx) == '0') {
+
+            return 0;
+        }
+
+        int count = 0;
+        int num = str.charAt(idx) - '0';
+        char ch = (char) (str.charAt(idx) - '1' + 'a');
+        count += DecodeWays(str, idx + 1, ans + ch);
+
+        if (idx + 1 < str.length()) {
+
+            int num2 = num * 10 + (str.charAt(idx + 1) - '0');
+
+            if (num2 <= 26) {
+                count += DecodeWays(str, idx + 2, ans + (char) (num2 + 'a'));
+            }
+
+        }
+
+        return count;
+
+    }
+
     public static int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
     public static String[] dirs = { "d", "t", "r", "l" };
 
@@ -172,36 +204,14 @@ public class rec_bu {
         return count;
 
     }
-    public String shortestPalindrome(String s) {
-        
-        StringBuilder sb=new StringBuilder(s);
-        
-        int l=0,r=s.length()-1;
-        while(l<r){
-            
-            Character ch=sb.charAt(l);
-            sb.setCharAt(l, sb.charAt(r));
-            sb.setCharAt(r, ch);
-            l++;
-            r--;            
-        }
-      String rev=sb.toString();
-        int n=s.length();
-        for(int i=0;i<n;i++)
-        {
-            if(s.substring(0,n-i)==rev.substring(i))
-            {
-                return rev.substring(0,i)+s;
-            }
-        }
-        return "";
-    }
-    public static void main(String[] args) {
 
+    
+    public static void main(String[] args) {
 
         // System.out.println(mazePath( 0,0, 3, 3, ""));
         // subs("abc","");
-        int ans= keypad("235","");
+        // int ans = keypad("235", "");
+        int ans = DecodeWays("12204", 0, "");
         System.out.println(ans);
         // System.out.println(mazePath(1,1,3,2,""));
         // diceJump(9,"");
