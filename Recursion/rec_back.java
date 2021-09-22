@@ -7,6 +7,40 @@ import java.util.*;
 public class rec_back {
     public static Scanner scn = new Scanner(System.in);
 
+    public static int[][] dir1 = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    public static String[] dirs1 = { "d", "t", "r", "l" };
+
+    public static int MazePathWith4Dir(int n, int m, boolean[][] vis, String asf) {
+        
+        if(n==0&&m==0){
+            System.out.println(asf);
+            return 1;
+        }
+
+        vis[n][m] = true;
+        int count = 0;
+        for (int i = 0; i < dir1.length; i++) {
+            int r = n - dir1[i][0];
+            int c = m - dir1[i][1];
+            if (r >= 0 && r < vis.length && c >= 0 && c < vis[0].length && vis[r][c] == false) {
+
+                count += MazePathWith4Dir(r, c, vis,dirs1[i]+asf);
+            }
+        }
+        vis[n][m] = false;
+
+        return count;
+
+    }
+
+    public static int MazePathWith4Dir(int n, int m) {
+
+        boolean[][] visited = new boolean[n][m];
+
+        return MazePathWith4Dir(n - 1, m - 1, visited, "");
+
+    }
+
     public static int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 },
             { -1, -1 } };
     public static String[] dirs = { "d", "t", "r", "l", "sw", "sw", "ne", "nw" };
@@ -111,9 +145,10 @@ public class rec_back {
         // int [][] vis=new int[3][3];
         // System.out.println(floodFill(0,0,"",mat));
 
-        int[][] dir = { { 1, 0 }, { 0, 1 }, { 0, -1 }, { -1, 0 } };
-        String[] dirS = { "D", "R", "L", "U" };
-
+        // int[][] dir = { { 1, 0 }, { 0, 1 }, { 0, -1 }, { -1, 0 } };
+        // String[] dirS = { "D", "R", "L", "U" };
+             
+        System.out.println(MazePathWith4Dir(3, 3));
         // System.out.println(longestPath(0,0,3,"",mat,dir,dirS));
         // System.out.println(shortestPath(0,0,3,"",mat,dir,dirS));
 
