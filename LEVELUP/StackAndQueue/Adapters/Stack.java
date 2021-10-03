@@ -11,7 +11,6 @@ public class Stack {
     }
 
     private Node head;
-    private Node tail;
     private int size;
 
     Stack() {
@@ -20,7 +19,6 @@ public class Stack {
 
     private void initialize() {
         this.head = null;
-        this.tail = null;
         this.size = 0;
     }
 
