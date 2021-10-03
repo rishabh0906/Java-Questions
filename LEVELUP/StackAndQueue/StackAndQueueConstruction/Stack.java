@@ -1,3 +1,4 @@
+package StackAndQueueConstruction;
 
 public class Stack {
 
@@ -36,7 +37,10 @@ public class Stack {
         if (this.NoOfEle == 0)
             throw new Exception("StackIsEmptyException");
     }
+    public int MaxSize(){
 
+        return this.MaxCap;
+    }
     public boolean isEmpty() {
 
         return this.NoOfEle == 0;
