@@ -41,7 +41,7 @@ public class Stack {
     private void addFirst(Node node) {
 
         if (this.head == null) {
-            this.head = this.tail = node;
+            this.head =  node;
         } else {
             node.next = this.head;
             this.head = node;
