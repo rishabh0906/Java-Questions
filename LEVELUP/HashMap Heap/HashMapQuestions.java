@@ -296,15 +296,15 @@ public class HashMapQuestions {
         ArrayList<Integer> list;
 
         public RandomizedSet() {
-            this.map = new HashSet<>();
+            this.map = new HashMap<>();
         }
 
         public boolean insert(int val) {
             if (map.containsKey(val))
                 return false;
 
-            map.putIfAbsent(val, list.size());
-            list.add(val);
+                list.add(val);
+                map.putIfAbsent(val, list.size());
 
             return true;
 
