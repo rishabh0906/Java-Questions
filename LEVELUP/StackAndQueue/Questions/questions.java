@@ -1,6 +1,9 @@
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+
+import javax.swing.event.ListDataEvent;
+
 import java.util.ArrayList;
 import java.util.*;
 import java.util.HashMap;
@@ -579,6 +582,58 @@ public class questions {
         }
 
         return carFleet;
+    }
+
+    public int maximumGain(String s, int gr, int sr, String p) {
+
+        int ans = 0;
+        LinkedList<Integer> st = new LinkedList<>();
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < sb.length(); i++) {
+            char ch = sb.charAt(i);
+            if (ch == p.charAt(0))
+                st.addFirst(i);
+            else if (ch == p.charAt(1)) {
+                if (st.size() != 0) {
+                    int top = st.removeFirst();
+                    sb.setCharAt(top, '#');
+                    sb.setCharAt(i, '#');
+                    ans += gr;
+                }
+            }
+        }
+
+        while (st.size() != 0)
+            st.remove();
+
+        p = "" + p.charAt(1) + p.charAt(0);
+        for (int i = 0; i < sb.length(); i++) {
+            char ch = sb.charAt(i);
+            if (ch == '#')
+                continue;
+            if (ch == p.charAt(0))
+                st.addFirst(i);
+            else if (ch == p.charAt(1)) {
+                if (st.size() != 0) {
+                    int top = st.removeFirst();
+                    sb.setCharAt(top, '#');
+                    sb.setCharAt(i, '#');
+                    ans += sr;
+                }
+            }
+        }
+
+        return ans;
+
+    }
+
+    public int maximumGain(String s, int x, int y) {
+
+        if (x > y)
+            return maximumGain(s, x, y, "ab");
+
+        return maximumGain(s, y, x, "ba");
+
     }
 
 }

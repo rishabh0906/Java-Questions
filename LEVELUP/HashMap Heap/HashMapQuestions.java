@@ -1,7 +1,4 @@
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class HashMapQuestions {
 
@@ -116,7 +113,7 @@ public class HashMapQuestions {
         return len;
     }
 
-     // 954
+    // 954
     public boolean canReorderDoubled(int[] arr) {
         HashMap<Integer, Integer> map = new HashMap<>();
 
@@ -162,8 +159,10 @@ public class HashMapQuestions {
             else
                 minpq.add(num);
 
-            if(maxpq.size() - minpq.size() == 2) minpq.add(maxpq.remove());
-            if(maxpq.size() - minpq.size() == -1) maxpq.add(minpq.remove());
+            if (maxpq.size() - minpq.size() == 2)
+                minpq.add(maxpq.remove());
+            if (maxpq.size() - minpq.size() == -1)
+                maxpq.add(minpq.remove());
         }
 
         public double findMedian() {
@@ -173,7 +172,229 @@ public class HashMapQuestions {
                 return maxpq.peek() * 1.0;
         }
     }
-    
-    // 127
 
+    // 127
+    class pair {
+
+        String str = null;
+        int height = 0;
+
+        pair(String str, int height) {
+            this.str = str;
+            this.height = height;
+        }
+    }
+
+    public int ladderLength_01(String beginWord, String endWord, List<String> wordList) {
+
+        HashSet<String> map = new HashSet<>();
+
+        LinkedList<pair> queue = new LinkedList<>();
+        queue.addLast(new pair(beginWord, 1));
+        map.add(beginWord);
+        while (queue.size() != 0) {
+
+            pair p = queue.removeFirst();
+
+            if (p.str.equals(endWord))
+                return p.height;
+
+            for (String str : wordList) {
+
+                int count = 0;
+                for (int i = 0; i < str.length(); i++) {
+                    if (str.charAt(i) != p.str.charAt(i))
+                        count++;
+                }
+                if (count == 1 && map.contains(str) == false) {
+                    map.add(str);
+                    queue.addLast(new pair(str, p.height + 1));
+                }
+
+            }
+        }
+
+        return 0;
+
+    }
+
+    public int ladderLength_02(String beginWord, String endWord, List<String> wordList) {
+
+        HashSet<String> vis = new HashSet<>();
+        HashSet<String> map = new HashSet<>();
+        for (String str : wordList)
+            map.add(str);
+        LinkedList<pair> queue = new LinkedList<>();
+        queue.addLast(new pair(beginWord, 1));
+        vis.add(beginWord);
+        while (queue.size() != 0) {
+
+            pair p = queue.removeFirst();
+
+            if (p.str.equals(endWord))
+                return p.height;
+
+            for (int i = 0; i < 26; i++) {
+
+                char ch = (char) (i + 'a');
+
+                for (int j = 0; j < p.str.length(); j++) {
+
+                    StringBuilder sb = new StringBuilder(p.str);
+                    char temp = sb.charAt(j);
+                    sb.setCharAt(j, ch);
+                    if (map.contains(sb.toString()) && vis.contains(sb.toString()) == false) {
+                        vis.add(sb.toString());
+                        queue.addLast(new pair(sb.toString(), p.height + 1));
+                    }
+
+                    sb.setCharAt(j, temp);
+                }
+            }
+
+        }
+
+        return 0;
+
+    }
+
+    public String kthLargestNumber(String[] nums, int k) {
+
+        PriorityQueue<String> pq = new PriorityQueue<>((a, b) -> {
+            if (a.length() != b.length())
+                return a.length() - b.length();
+
+            for (int i = 0; i < a.length(); i++) {
+                if (b.charAt(i) < a.charAt(i))
+                    return 1;
+                else if (a.charAt(i) < b.charAt(i))
+                    return -1;
+            }
+
+            return 0;
+
+        });
+
+        for (int i = 0; i < nums.length; i++) {
+
+            pq.add(nums[i]);
+
+            if (pq.size() > k)
+                pq.remove();
+
+        }
+
+        while (pq.size() != 0)
+            System.out.print(pq.remove() + " ");
+        return "";
+
+    }
+
+    class RandomizedSet {
+
+        HashMap<Integer, Integer> map;
+        ArrayList<Integer> list;
+
+        public RandomizedSet() {
+            this.map = new HashSet<>();
+        }
+
+        public boolean insert(int val) {
+            if (map.containsKey(val))
+                return false;
+
+            map.putIfAbsent(val, list.size());
+            list.add(val);
+
+            return true;
+
+        }
+
+        public boolean remove(int val) {
+
+            if (map.containsKey(val) == false)
+                return false;
+
+            int idx=map.get(val);
+            int lidx=list.size()-1;
+            list.set(idx, list.get(lidx));
+            list.remove(list.size()-1);
+            map.put(list.get(idx),idx);
+            map.remove(val);
+
+            return true;
+
+        }
+
+        public int getRandom() {
+            Random rand = new Random();
+
+            int idx = rand.nextInt(list.size());
+
+            return list.get(idx);
+
+        }
+
+        // 447
+    public int numberOfBoomerangs(int[][] points) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int ans = 0, n = points.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j)
+                    continue;
+                int dis = distance(points, i, j);
+                map.put(dis, map.getOrDefault(dis, 0) + 1);
+            }
+
+            for (int ele : map.values()) {
+                ans += ele * (ele - 1);
+            }
+
+            map.clear();
+        }
+
+        return ans;
+    }
+
+    public int distance(int[][] points, int i, int j) {
+        int x = (points[j][0] - points[i][0]);
+        int y = (points[j][1] - points[i][1]);
+
+        return x * x + y * y;
+    }
+
+    // 149
+    public int maxPoints(int[][] points) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int ans = 0, n = points.length;
+        for (int i = 0; i < n; i++) {
+            int overlap = 0, max = 0;
+            for (int j = i + 1; j < n; j++) {
+                int xdiff = points[j][0] - points[i][0];
+                int ydiff = points[j][1] - points[i][1];
+
+                int gcd = gcd(xdiff, ydiff);
+
+                xdiff /= gcd;
+                ydiff /= gcd;
+
+                String s = xdiff + "@" + ydiff;
+                map.put(s, map.getOrDefault(s, 0) + 1);
+                max = Math.max(map.get(s), max);
+            }
+
+            ans = Math.max(max + 1, ans);
+            map.clear();
+        }
+
+        return ans;
+    }
+
+    public int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+    }
+    }
 }
