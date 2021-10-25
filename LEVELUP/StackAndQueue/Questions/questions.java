@@ -584,55 +584,43 @@ public class questions {
         return carFleet;
     }
 
-    public int maximumGain(String s, int gr, int sr, String p) {
+    public String removeOccurrences(String s, String part) {
 
-        int ans = 0;
-        LinkedList<Integer> st = new LinkedList<>();
-        StringBuilder sb = new StringBuilder(s);
-        for (int i = 0; i < sb.length(); i++) {
-            char ch = sb.charAt(i);
-            if (ch == p.charAt(0))
-                st.addFirst(i);
-            else if (ch == p.charAt(1)) {
-                if (st.size() != 0) {
-                    int top = st.removeFirst();
-                    sb.setCharAt(top, '#');
-                    sb.setCharAt(i, '#');
-                    ans += gr;
+        char[] p = part.toCharArray();
+        char[] str = s.toCharArray();
+        ArrayList<Character> st = new ArrayList<>();
+        int n = p.length;
+        for (int i = 0; i < str.length; i++) {
+
+            st.add(str[i]);
+            if (str[i] == p[n - 1]) {
+
+                int size = st.size();
+                int idx = n;
+                while (idx > 0 && size > 0 && p[idx - 1] == st.get(size - 1)) {
+
+                    idx--;
+                    size--;
+
+                }
+                if (idx == 0) {
+
+                    idx = n;
+                    while (idx > 0) {
+                        st.remove(st.size() - 1);
+                        idx--;
+                    }
                 }
             }
+
         }
 
-        while (st.size() != 0)
-            st.remove();
-
-        p = "" + p.charAt(1) + p.charAt(0);
-        for (int i = 0; i < sb.length(); i++) {
-            char ch = sb.charAt(i);
-            if (ch == '#')
-                continue;
-            if (ch == p.charAt(0))
-                st.addFirst(i);
-            else if (ch == p.charAt(1)) {
-                if (st.size() != 0) {
-                    int top = st.removeFirst();
-                    sb.setCharAt(top, '#');
-                    sb.setCharAt(i, '#');
-                    ans += sr;
-                }
-            }
+        String ans = "";
+        for (char ch : st) {
+            ans += ch;
         }
 
         return ans;
-
-    }
-
-    public int maximumGain(String s, int x, int y) {
-
-        if (x > y)
-            return maximumGain(s, x, y, "ab");
-
-        return maximumGain(s, y, x, "ba");
 
     }
 
