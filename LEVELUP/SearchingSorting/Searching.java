@@ -1,4 +1,4 @@
-import javax.lang.model.util.ElementScanner14;
+import java.util.*;
 
 public class Searching {
 
@@ -102,7 +102,7 @@ public class Searching {
 
             int mid = (si + ei) / 2;
 
-            if (arr[i] <= target) {
+            if (arr[si] <= target) {
                 si = mid + 1;
             } else
                 ei = mid;
@@ -151,6 +151,122 @@ public class Searching {
 
         return false;
 
+    }
+
+    public static int CountMyInversion(int[] arr, int l, int mid, int r) {
+
+        int[] sortedArray = new int[r - l + 1];
+        int k = 0;
+        int i = l;
+        int j = mid + 1;
+        int inversions = 0;
+        while (i <= mid && j <= r) {
+
+            if (arr[j] < arr[i]) {
+                sortedArray[k++] = arr[j];
+                inversions += mid - i + 1;
+                j++;
+            } else {
+                sortedArray[k++] = arr[i];
+                i++;
+            }
+        }
+
+        while (i <= mid || j <= r) {
+            sortedArray[k++] = arr[i <= mid ? i++ : j++];
+        }
+
+        for (int idx = 0; idx < sortedArray.length; idx++) {
+            arr[idx + l] = sortedArray[idx];
+        }
+
+        return inversions;
+
+    }
+
+    public static int CountInversionsGlobal(int[] arr, int l, int r) {
+
+        if (l >= r) {
+            return 0;
+        }
+
+        int mid = (l + r) / 2;
+        int count = 0;
+        count += CountInversionsGlobal(arr, l, mid);
+        count += CountInversionsGlobal(arr, mid + 1, r);
+
+        count += CountMyInversion(arr, l, mid, r);
+
+        return count;
+
+    }
+
+    public static boolean inversions(int[] arr) {
+
+        int local = 0;
+
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1])
+                local++;
+        }
+        return local == CountInversionsGlobal(arr, 0, arr.length - 1);
+
+    }
+
+    public static List<int[]> TwoSum_03(int[] arr, int target) {
+
+        int l = 0, r = arr.length - 1;
+
+        List<int[]> ans = new ArrayList<>();
+
+        while (l < r) {
+
+            if (arr[l] + arr[r] == target) {
+                ans.add(new int[] { l, r });
+                int left = l;
+                int right = r;
+                l++;
+                r--;
+                while (l < r && arr[left] == arr[l]) {
+                    l++;
+                }
+
+                while (l < r && arr[right] == arr[r]) {
+                    r--;
+                }
+            } else if (arr[l] + arr[r] < target) {
+
+                l++;
+            } else {
+                r--;
+            }
+        }
+        return ans;
+
+    }
+
+    
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        
+        Arrays.sort(nums);
+        int i=0;
+        while(i<nums.length){
+            
+            int findSum=-nums[i];
+            
+            List<int[]> twoSumAns=TwoSum_03(nums,i+1,nums.length-1,findSum);
+            for(int[]a: twoSumAns){
+                List<Integer> triplet=new ArrayList<>();
+                triplet.add(nums[i]);
+                triplet.add(a[0]);
+                triplet.add(a[1]);
+                ans.add(triplet);
+            }
+            i++;
+            while(i<nums.length&&nums[i-1]==nums[i]) i++;
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
