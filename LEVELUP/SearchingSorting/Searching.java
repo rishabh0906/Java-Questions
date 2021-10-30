@@ -213,9 +213,9 @@ public class Searching {
 
     }
 
-    public static List<int[]> TwoSum_03(int[] arr, int target) {
+    public static List<int[]> TwoSum_03(int[] arr, int si, int ei, int target) {
 
-        int l = 0, r = arr.length - 1;
+        int l = si, r = ei;
 
         List<int[]> ans = new ArrayList<>();
 
@@ -245,28 +245,150 @@ public class Searching {
 
     }
 
-    
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> ans=new ArrayList<>();
-        
+    public List<List<Integer>> threeSum(int[] nums, int si, int ei, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+
         Arrays.sort(nums);
-        int i=0;
-        while(i<nums.length){
-            
-            int findSum=-nums[i];
-            
-            List<int[]> twoSumAns=TwoSum_03(nums,i+1,nums.length-1,findSum);
-            for(int[]a: twoSumAns){
-                List<Integer> triplet=new ArrayList<>();
+        int i = si;
+        while (i < ei) {
+
+            int findSum = target - nums[i];
+
+            List<int[]> twoSumAns = TwoSum_03(nums, i + 1, nums.length - 1, findSum);
+            for (int[] a : twoSumAns) {
+                List<Integer> triplet = new ArrayList<>();
                 triplet.add(nums[i]);
                 triplet.add(a[0]);
                 triplet.add(a[1]);
                 ans.add(triplet);
             }
             i++;
-            while(i<nums.length&&nums[i-1]==nums[i]) i++;
+            while (i < nums.length && nums[i - 1] == nums[i])
+                i++;
         }
         return ans;
+    }
+
+    public List<List<Integer>> KSum(int[] nums, int si, int ei, int target, int k) {
+        if (k == 3) {
+            return threeSum(nums, si, ei, target);
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+
+        Arrays.sort(nums);
+        int i = si;
+        while (i < ei) {
+
+            int findSum = target - nums[i];
+
+            List<List<Integer>> recAns = KSum(nums, i + 1, ei, findSum, k - 1);
+            for (List<Integer> a : recAns) {
+                a.add(nums[i]);
+                ans.add(a);
+            }
+            i++;
+            while (i < nums.length && nums[i - 1] == nums[i])
+                i++;
+        }
+        return ans;
+    }
+
+    public int CountTargetPairsInTwoArrays(int[] nums1, int[] nums2, int target) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int ele : nums1)
+            map.put(ele, map.getOrDefault(ele, 0) + 1);
+
+        int count = 0;
+
+        for (int ele : nums2) {
+
+            if (map.containsKey(target - ele)) {
+                count += map.get(target - ele);
+            }
+        }
+        return count;
+
+    }
+
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+
+                map.put(nums1[i] + nums2[j], map.getOrDefault(nums1[i] + nums2[j], 0) + 1);
+            }
+        }
+        int count = 0;
+        for (int i = 0; i < nums3.length; i++) {
+            for (int j = 0; j < nums4.length; j++) {
+
+                int currSum = nums3[i] + nums4[j];
+
+                if (map.containsKey(-currSum)) {
+                    count += map.get(-currSum);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public int RotatedSortedArray(int[] nums, int target) {
+
+        int si = 0;
+        int ei = nums.length - 1;
+
+        while (si <= ei) {
+
+            int mid = si + (ei - si) / 2;
+
+            if (nums[mid] == target)
+                return mid;
+            if (nums[si] < nums[mid]) {
+                if (target >= nums[si] && target < nums[mid])
+                    ei = mid - 1;
+                else
+                    si = mid + 1;
+            } else {
+                if (target > nums[mid] && target <= nums[ei]) {
+                    si = mid + 1;
+                } else
+                    ei = mid - 1;
+            }
+        }
+        return -1;
+
+    }
+// test Case - 8 , 8 , 8 , 8 , 8 , 8 ,7, 8, 8, 8, 8, 8, 8  target=7   // follow up of distinct element
+    public boolean RotatedSortedArray_02(int[] nums, int target) {
+        int si = 0;
+        int ei = nums.length - 1;
+
+        while (si <= ei) {
+
+            int mid = si + (ei - si) / 2;
+
+            if (nums[mid] == target||nums[si]==target)
+                return true;
+            if (nums[si] < nums[mid]) {
+                if (target >= nums[si] && target < nums[mid])
+                    ei = mid - 1;
+                else
+                    si = mid + 1;
+            } else if(nums[ei]>nums[mid]) {
+                if (target > nums[mid] && target <= nums[ei]) {
+                    si = mid + 1;
+                } else
+                    ei = mid - 1;
+            }
+            else{
+                si++;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
