@@ -1,6 +1,5 @@
 import java.util.*;
 
-import javax.lang.model.util.ElementScanner14;
 
 public class Searching {
 
@@ -117,7 +116,7 @@ public class Searching {
     public static boolean searchMatrix_01(int[][] matrix, int target) {
 
         int si = 0, ei = matrix.length * matrix[0].length - 1;
-        int n = matrix.length, m = matrix[0].length;
+        int n = matrix.length;
         while (si <= ei) {
 
             int mid = (si + ei) / 2;
