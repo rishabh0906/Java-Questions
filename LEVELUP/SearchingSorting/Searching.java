@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class Searching {
 
     public static int binarySearch(int[] arr, int si, int ei, int value) {
@@ -362,7 +364,9 @@ public class Searching {
         return -1;
 
     }
-// test Case - 8 , 8 , 8 , 8 , 8 , 8 ,7, 8, 8, 8, 8, 8, 8  target=7   // follow up of distinct element
+
+    // test Case - 8 , 8 , 8 , 8 , 8 , 8 ,7, 8, 8, 8, 8, 8, 8 target=7 // follow up
+    // of distinct element
     public boolean RotatedSortedArray_02(int[] nums, int target) {
         int si = 0;
         int ei = nums.length - 1;
@@ -371,24 +375,127 @@ public class Searching {
 
             int mid = si + (ei - si) / 2;
 
-            if (nums[mid] == target||nums[si]==target)
+            if (nums[mid] == target || nums[si] == target)
                 return true;
             if (nums[si] < nums[mid]) {
                 if (target >= nums[si] && target < nums[mid])
                     ei = mid - 1;
                 else
                     si = mid + 1;
-            } else if(nums[ei]>nums[mid]) {
+            } else if (nums[ei] > nums[mid]) {
                 if (target > nums[mid] && target <= nums[ei]) {
                     si = mid + 1;
                 } else
                     ei = mid - 1;
-            }
-            else{
+            } else {
                 si++;
             }
         }
         return false;
+    }
+
+    public int RotatedSortedArray_03(int[] nums) {
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l < r) {
+
+            int mid = (l + r) / 2;
+            if (nums[mid] < nums[r]) {
+                r = mid;
+            } else
+                l = mid + 1;
+        }
+
+        return nums[l];
+    }
+
+    public int RotatedSortedArray_04(int[] nums) {
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l < r) {
+
+            int mid = (l + r) / 2;
+            if (nums[mid] < nums[r]) {
+                r = mid;
+            } else if (nums[mid] > nums[r])
+                l = mid + 1;
+            else
+                r--;
+        }
+
+        return nums[l];
+    }
+
+    // O(m+n)
+    public static double MedianOfTwoSorted_01(int[] nums1, int[] nums2) {
+
+        int n = nums1.length;
+        int m = nums2.length;
+
+        int[] merge = new int[n + m];
+        int i = 0, j = 0;
+        int k = 0;
+        while (i < n && j < m) {
+            if (nums1[i] < nums2[j]) {
+                merge[k++] = nums1[i++];
+            } else {
+                merge[k++] = nums2[j++];
+            }
+
+        }
+
+        while (i < n) {
+            merge[k++] = nums1[i++];
+        }
+        while (j < m) {
+            merge[k++] = nums2[j++];
+        }
+
+        return (double) (merge[(n + m) / 2] + merge[(n + m - 1) / 2]) / 2;
+
+    }
+
+    // O(log(min(m,n)))
+    public static double MedianOfTwoSorted_02(int[] nums1, int[] nums2) {
+
+        if (nums1.length > nums2.length)
+            return MedianOfTwoSorted_02(nums2, nums1);
+
+        int total = nums1.length + nums2.length;
+        int l = 0, r = nums1.length;
+
+        while (l <= r) {
+
+            int mid1 = (l + r) / 2;
+            int mid2 = (total + 1) / 2 - mid1;
+            int aleft = mid1 == 0 ? (int) -1e9 : nums1[mid1 - 1];
+            int aright = (mid1 == nums1.length) ? (int) 1e9 : nums1[mid1];
+            int bleft = mid2 == 0 ? (int) -1e9 : nums2[mid2 - 1];
+            int bright = (mid2 == nums2.length) ? (int) 1e9 : nums2[mid2];
+
+            if (aleft <= bright && bleft <= aright) {
+
+                if (total % 2 == 0) {
+
+                    return (double) (Math.max(aleft, bleft) + Math.min(aright, bright)) / 2.0;
+                } else {
+                    return (double) (Math.max(aleft, bleft));
+                }
+            }
+
+            if (aleft > bright) {
+                r = mid1 - 1;
+            } else {
+                l = mid1 + 1;
+            }
+
+        }
+        return -1;
+
     }
 
     public static void main(String[] args) {
