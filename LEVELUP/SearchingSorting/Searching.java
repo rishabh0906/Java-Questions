@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class Searching {
 
     public static int binarySearch(int[] arr, int si, int ei, int value) {
@@ -494,6 +493,67 @@ public class Searching {
 
         }
         return -1;
+
+    }
+
+    ///////////////////////////////////////////////////////////////
+    public int[] GreaterOnRight(int[] nums) {
+
+        int[] ans = new int[nums.length];
+        LinkedList<Integer> st = new LinkedList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            while (st.size() != 0 && nums[st.getFirst()] < nums[i]) {
+
+                ans[st.removeFirst()] = i;
+            }
+            st.addFirst(i);
+        }
+        while (st.size() != 0) {
+            ans[st.removeFirst()] = nums.length;
+        }
+        return ans;
+
+    }
+
+    public int[] GreaterOnLeft(int[] nums) {
+        int[] ans = new int[nums.length];
+        LinkedList<Integer> st = new LinkedList<>();
+
+        for (int i = nums.length - 1; i >= 0; i--) {
+
+            while (st.size() != 0 && nums[st.getFirst()] < nums[i]) {
+                ans[st.removeFirst()] = i;
+            }
+            st.addFirst(i);
+        }
+        while (st.size() != 0) {
+            ans[st.removeFirst()] = -1;
+        }
+
+        return ans;
+    }
+
+    /*
+     * [73,55,36,5,55,14,9,7,72,52] 32 69          //duplicacy
+     */
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+
+        int[] gor = GreaterOnRight(nums);
+        int[] gol = GreaterOnLeft(nums);
+
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            if (nums[i] >= left && nums[i] <= right) {
+
+                res += (i - gol[i]) * (gor[i] - i);
+            }
+
+        }
+
+        return res;
 
     }
 
