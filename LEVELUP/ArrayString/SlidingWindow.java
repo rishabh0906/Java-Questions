@@ -1,4 +1,6 @@
-public class SlidingWindow {
+import java.util.HashMap;
+
+class SlidingWindow {
 
     public int lengthOfLongestSubstring(String s) {
 
@@ -96,7 +98,8 @@ public class SlidingWindow {
         return max;
 
     }
-// leetcode 76
+
+    // leetcode 76
     public String minWindow(String s, String t) {
 
         int n = t.length();
@@ -139,6 +142,40 @@ public class SlidingWindow {
         return min == (int) 1e9 ? "" : s.substring(Sidx, Eidx + 1);
 
     }
-    
 
+    public int subarrayWithAtmostKDistinct(int[] nums, int k) {
+
+        int start = 0;
+        int end = 0;
+        int count = 0;
+        int distinct = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        while (end < nums.length) {
+
+            if (!map.containsKey(nums[end])) {
+                distinct++;
+            }
+            map.put(nums[end], map.getOrDefault(nums[end], 0) + 1);
+            while (distinct > k) {
+
+                if (map.get(nums[start]) == 1) {
+                    distinct--;
+                }
+                map.put(nums[start], map.get(nums[start]) - 1);
+                start++;
+            }
+
+            if (distinct <= k) {
+                count += end - start + 1;
+            }
+            end++;
+
+        }
+        return count;
+    }
+   // exactly k = atmost k - atmost (k-1)            important
+    public int subarraysWithKDistinct(int[] nums, int k) {
+
+        return subarrayWithAtmostKDistinct(nums, k) - subarrayWithAtmostKDistinct(nums, k - 1);
+    }
 }
