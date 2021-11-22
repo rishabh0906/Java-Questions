@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.*;
 
 class SlidingWindow {
 
@@ -173,9 +173,123 @@ class SlidingWindow {
         }
         return count;
     }
-   // exactly k = atmost k - atmost (k-1)            important
+
+    // exactly k = atmost k - atmost (k-1) important
+
     public int subarraysWithKDistinct(int[] nums, int k) {
 
         return subarrayWithAtmostKDistinct(nums, k) - subarrayWithAtmostKDistinct(nums, k - 1);
+    }
+
+    /// 485
+    public int findMaxConsecutiveOnes(int[] nums) {
+
+        int start = -1;
+        int end = 0;
+        int ans = 0;
+        while (end < nums.length) {
+
+            if (nums[end] == 1) {
+
+            } else {
+                ans = Math.max(ans, end - start - 1);
+                start = end;
+            }
+            end++;
+
+        }
+        ans = Math.max(ans, end - start - 1);
+
+        return ans;
+    }
+
+    // lintcode 883
+
+    public int findMaxConsecutiveOnes_02(int[] nums) {
+        int ans = 0;
+        int start = 0;
+        int end = 0;
+        int zeros = 0;
+        while (end < nums.length) {
+
+            if (nums[end] == 0)
+                zeros++;
+            while (zeros > 1) {
+                if (nums[start] == 0)
+                    zeros--;
+                start++;
+            }
+            ans = Math.max(ans, end - start + 1);
+            end++;
+        }
+
+        return ans;
+    }
+
+    public int subarraysDivByK(int[] nums, int k) {
+
+        int count = 0;
+        int sum = 0;
+
+        HashMap<Integer, Integer> st = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            sum += nums[i];
+            if (sum % k == 0)
+                count++;
+
+            if (st.containsKey((sum % k + k) % k))
+                count += st.get((sum % k + k) % k);
+
+            st.put((sum % k + k) % k, st.getOrDefault((sum % k + k) % k, 0) + 1);
+        }
+
+        return count;
+
+    }
+
+    // pending
+    public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+
+        int locx = location.get(0);
+        int locy = location.get(1);
+
+        List<Double> angles = new ArrayList<>();
+        int co_points = 0;
+        for (List<Integer> point : points) {
+
+            int x = point.get(0);
+            int y = point.get(1);
+
+            if (x == locx && y == locy) {
+                co_points++;
+                continue;
+            }
+            double slope = CalculateSlopeAngle(x, y, locx, locy);
+            angles.add(slope);
+
+        }
+
+        for (int i = 0; i < angles.size(); i++) {
+
+            double lower = angles.get(i);
+            double upper = lower + angle;
+
+        }
+        return 0;
+    }
+
+    public double CalculateSlopeAngle(int x1, int y1, int x2, int y2) {
+
+        double slope = (y1 - y2) / ((x1 - x2) * 1.0);
+
+        double angle = Math.toDegrees(Math.atan(slope));
+
+        if (angle < 0) {
+            angle += 360.0;
+        }
+
+        return angle;
     }
 }
