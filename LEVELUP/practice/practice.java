@@ -93,7 +93,7 @@ public class practice {
         int n = nums.length;
         DisjointUnionSet dsu = new DisjointUnionSet(n);
         ArrayList<Integer> prime = sieve();
-        HashMap<Integer, ArrayList> map = new ArrayList<>();
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
 
         for (int i = 0; i < n; i++) {
 

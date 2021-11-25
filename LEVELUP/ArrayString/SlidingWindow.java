@@ -249,5 +249,82 @@ class SlidingWindow {
 
     }
 
-    
+    public int KadanesAlgo(int[] nums) {
+
+        int c_sum = 0;
+        int max_sum = (int) -1e9;
+        int si = -1;
+        int ei = -1;
+        int ci = 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            c_sum += nums[i];
+
+            if (c_sum > max_sum) {
+                max_sum = c_sum;
+                si = ci;
+                ei = i;
+            }
+
+            if (c_sum < 0) {
+
+                c_sum = 0;
+                ci = i + 1;
+            }
+        }
+
+        return max_sum;
+    }
+
+    public long KadanesAlgo_02(int[] nums) {
+
+        long c_sum = 0;
+        long max_sum = 0;
+        int si = -1;
+        int ei = -1;
+        int ci = 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            c_sum += (long) nums[i];
+
+            if (c_sum > max_sum) {
+                max_sum = c_sum;
+                si = ci;
+                ei = i;
+            }
+
+            if (c_sum < 0) {
+
+                c_sum = 0;
+                ci = i + 1;
+            }
+        }
+
+        return max_sum;
+    }
+
+    public int kConcatenationMaxSum(int[] arr, int k) {
+
+        if (k == 1)
+            return (int) KadanesAlgo_02(arr);
+
+        int[] doubleArray = new int[2 * arr.length];
+        int count = 2;
+        int idx = 0;
+        while (count-- > 0) {
+            for (int i = 0; i < arr.length; i++) {
+                doubleArray[idx++] = arr[i];
+            }
+        }
+        long sum = 0;
+        int mod = (int) 1e9 + 7;
+        for (int ele : arr) {
+            sum = (sum + ele) % mod;
+        }
+        long ans1 = KadanesAlgo_02(doubleArray) % mod;
+
+        long ans = (ans1 + ((k - 2) * (sum < 0 ? 0 : sum)) % mod) % mod;
+
+        return ans < 0 ? 0 : (int) ans;
+    }
 }
