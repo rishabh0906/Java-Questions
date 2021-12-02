@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class array {
 
     public static void swap(int[] nums, int i, int j) {
@@ -115,6 +117,48 @@ public class array {
         segregate012(a);
         for (int ele : a)
             System.out.print(ele + " ");
+    }
+
+    class pair {
+
+        Integer sum = 0;
+        int[] idx;
+
+        pair(int sum, int[] idx) {
+            this.sum = sum;
+            this.idx = idx;
+
+        }
+    }
+
+    public int kthSmallest(int[][] mat, int k) {
+
+        PriorityQueue<pair> pq = new PriorityQueue<>();
+
+        int sum = 0;
+        for (int i = 0; i < mat.length; i++) {
+            sum += mat[i][0];
+        }
+        int[] idx = new int[mat.length];
+        pq.add(new pair(sum, idx));
+
+        while (k-- > 0) {
+
+            pair top = pq.remove();
+
+            for (int i = 0; i < mat.length; i++) {
+
+                if (top.idx[i] + 1 < mat[0].length) {
+
+                    int newsum = top.sum - mat[i][top.idx[i]] + mat[i][top.idx[i] + 1];
+                    int[] newidx = top.idx.clone();
+                    newidx[i] = top.idx[i] + 1;
+                    pq.add(new pair(newsum, newidx));
+                }
+            }
+        }
+
+        return pq.peek().sum;
     }
 
 }
