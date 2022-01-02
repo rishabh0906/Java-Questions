@@ -71,6 +71,5 @@ double calcAngle(int x1, int y1, int x2, int y2)
 
 int main(int argc, char const *argv[])
 {
-
     return 0;
 }

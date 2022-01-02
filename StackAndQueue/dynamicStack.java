@@ -9,7 +9,7 @@ public dynamicStack(int len)
 {
   super(len);
 }
-
+@Override
 public void push(int data) throws Exception
 {
     int max=super.maxSize();

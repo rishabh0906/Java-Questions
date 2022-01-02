@@ -40,9 +40,9 @@ public class Trie {
     }
 
     public boolean startsWith(String prefix) {
-        Node curr = root;
-        for (int i = 0; i < word.length(); i++) {
-            char ch = word.charAt(i);
+        Node curr = root1;
+        for (int i = 0; i < prefix.length(); i++) {
+            char ch = prefix.charAt(i);
             if (curr.children[ch - 'a'] == null) {
                 return false;
             }
