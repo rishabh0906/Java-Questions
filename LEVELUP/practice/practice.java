@@ -128,13 +128,28 @@ public class practice {
 
     }
 
-    public static void main(String[] args) {
+    public static class Circle {
 
-        int t;
-        t = scn.nextInt();
-        while (t-- > 0) {
-            solve();
+        public Circle(int radius) throws Exception {
+            init(radius);
         }
+
+        public static void MyException(int radius) throws Exception {
+            if (radius <= 0) {
+                throw new Exception("Radius Negative");
+            }
+        }
+
+        public static void init(int radius) throws Exception {
+            MyException(radius);
+            // Further Code
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        int r = scn.nextInt();
+        Circle c = new Circle(r);
 
     }
 

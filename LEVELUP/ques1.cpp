@@ -3,73 +3,39 @@
 
 using namespace std;
 
-int visiblePoints(vector<vector<int>> &points, int angle, vector<int> &location)
+int minSwaps(vector<int> &nums)
 {
+    int n = nums.size();
+    int ones = accumulate(nums.begin(), nums.end(), 0);
+    vector<int> vec(2 * n);
 
-    int locx = location[0];
-    int locy = location[1];
-    vector<double> angles;
-    int co_points = 0;
+    for (int i = 0; i < 2 * n; i++)
+    {
+        vec[i] = nums[i % n];
+    }
 
-    for (auto point : points)
+    int i = 0;
+    int j = 0;
+    int res = INT_MAX;
+    for (int i = 0, count = 0; i < n; i++)
     {
 
-        if (locx == point[0] && locy == point[1])
+        while (j - i < ones)
         {
-            co_points++;
-            continue;
+            count += nums[j];
+            j++;
         }
-
-        double ang = calcAngle(locx, locy, point[0], point[1]);
-        angles.push_back(ang);
+        res = min(res, ones - count);
+        count -= nums[i];
     }
 
-    sort(begin(angles), end(angles));
-    int ans = 0;
-    for (int i = 0; i < angles.size(); i++)
-    {
-
-        double start = angles[i];
-        double end = angles[i] + (double)angle * 1.0;
-        int num = findPoints(angles, start, min(end, 360.0));
-
-        if (end >= 360.0)
-        {
-
-            num += findPoints(angles, 0, end - 360);
-        }
-        ans = max(ans, num);
-    }
-
-    return ans + co_points;
+    return res;
 }
-
-int findPoints(vector<double> &angles, double lower, double upper)
-{
-
-    auto start = lower_bound(angles.begin(), angles.end(), lower);
-    auto end = upper_bound(angles.begin(), angles.end(), upper + 1e-5);
-
-    return distance(start, end);
-}
-
-double calcAngle(int x1, int y1, int x2, int y2)
-{
-
-    double slope = (double)(y1 - y2) / ((x1 - x2) * 1.0);
-
-    double angle = (atan(slope) * 180) / M_PI;
-
-    if (angle < 0)
-    {
-
-        angle += 360;
-    }
-
-    return angle;
-}
-
 int main(int argc, char const *argv[])
 {
+
+    vector<int> nums = {1, 0, 1, 0, 1, 1, 0};
+    cout << minSwaps(nums) << endl;
+
     return 0;
 }
