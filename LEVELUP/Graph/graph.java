@@ -118,6 +118,57 @@ public class graph {
 
     }
 
+    public void ConnectedComponent(ArrayList<Edge>[] graph, int src, boolean[] vis) {
+
+        vis[src] = true;
+
+        for (Edge e : graph[src]) {
+
+            if (!vis[e.v]) {
+                ConnectedComponent(graph, e.v, vis);
+            }
+        }
+    }
+
+    public int ConnectedComponent(ArrayList<Edge>[] graph, int n) {
+
+        boolean[] vis = new boolean[n];
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+
+            if (!vis[i]) {
+                ConnectedComponent(graph, i, vis);
+                count++;
+            }
+        }
+
+        return count;
+
+    }
+// le 1905 =====================================================
+    public void Check(int[][] grid1, int[][] grid2, int r, int c, boolean[] flag) {
+
+        if (grid1[r][c] == 0)
+            flag[0] = false;
+
+        grid2[r][c] = 0;
+
+        int[][] dir = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+
+        for (int i = 0; i < 4; i++) {
+
+            int newr = r + dir[i][0];
+            int newc = c + dir[i][1];
+            if (newr < 0 || newr >= grid2.length || newc < 0 || newc >= grid2[0].length || grid2[newr][newc] == 0)
+                continue;
+
+            Check(grid1, grid2, newr, newc, flag);
+        }
+
+    }
+
+    
+
     public static void main(String[] args) {
 
     }
