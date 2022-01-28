@@ -54,7 +54,7 @@ public class directed {
         int V = graph.length;
         int[] indegree = new int[V];
         ArrayList<Integer> order = new ArrayList<>();
-        boolean[] vis = new boolean[V];
+    
         for (int i = 0; i < V; i++) {
             for (Edge e : graph[i]) {
                 indegree[e.v]++;
