@@ -1,82 +1,6 @@
-
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-
-import javax.swing.event.ListDataEvent;
-
-import java.util.ArrayList;
 import java.util.*;
-import java.util.HashMap;
 
 public class questions {
-    public static int[] NGOR(int[] arr) {
-        int n = arr.length;
-        int[] ans = new int[n];
-        Arrays.fill(ans, n);
-        LinkedList<Integer> st = new LinkedList<>();
-        st.addFirst(-1);
-
-        for (int i = 0; i < n; i++) {
-            while (st.getFirst() != -1 && arr[st.getFirst()] < arr[i])
-                ans[st.removeFirst()] = i;
-
-            st.addFirst(i);
-        }
-
-        return ans;
-    }
-
-    public static int[] NSOR(int[] arr) {
-        int n = arr.length;
-        int[] ans = new int[n];
-        Arrays.fill(ans, n);
-        LinkedList<Integer> st = new LinkedList<>();
-        st.addFirst(-1);
-
-        for (int i = 0; i < n; i++) {
-            while (st.getFirst() != -1 && arr[st.getFirst()] > arr[i])
-                ans[st.removeFirst()] = i;
-
-            st.addFirst(i);
-        }
-
-        return ans;
-    }
-
-    public static int[] NGOL(int[] arr) {
-        int n = arr.length;
-        int[] ans = new int[n];
-        Arrays.fill(ans, -1);
-        LinkedList<Integer> st = new LinkedList<>();
-        st.addFirst(-1);
-
-        for (int i = n - 1; i >= 0; i--) {
-            while (st.getFirst() != -1 && arr[st.getFirst()] < arr[i])
-                ans[st.removeFirst()] = i;
-
-            st.addFirst(i);
-        }
-
-        return ans;
-    }
-
-    public static int[] NSOL(int[] arr) {
-        int n = arr.length;
-        int[] ans = new int[n];
-        Arrays.fill(ans, -1);
-        LinkedList<Integer> st = new LinkedList<>();
-        st.addFirst(-1);
-
-        for (int i = n - 1; i >= 0; i--) {
-            while (st.getFirst() != -1 && arr[st.getFirst()] > arr[i])
-                ans[st.removeFirst()] = i;
-
-            st.addFirst(i);
-        }
-
-        return ans;
-    }
-
     // 503
     public int[] nextGreaterElements(int[] arr) {
         int n = arr.length;
@@ -637,6 +561,93 @@ public class questions {
         }
 
         return ans;
+    }
+
+    public static int[] NGOR(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, n);
+        LinkedList<Integer> st = new LinkedList<>();
+        st.addFirst(-1);
+
+        for (int i = 0; i < n; i++) {
+            while (st.getFirst() != -1 && arr[st.getFirst()] < arr[i])
+                ans[st.removeFirst()] = i;
+
+            st.addFirst(i);
+        }
+
+        return ans;
+    }
+
+    public static int[] NSOR(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, n);
+        LinkedList<Integer> st = new LinkedList<>();
+        st.addFirst(-1);
+
+        for (int i = 0; i < n; i++) {
+            while (st.getFirst() != -1 && arr[st.getFirst()] > arr[i])
+                ans[st.removeFirst()] = i;
+
+            st.addFirst(i);
+        }
+
+        return ans;
+    }
+
+    public static int[] NGOL(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        LinkedList<Integer> st = new LinkedList<>();
+        st.addFirst(-1);
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (st.getFirst() != -1 && arr[st.getFirst()] < arr[i])
+                ans[st.removeFirst()] = i;
+
+            st.addFirst(i);
+        }
+
+        return ans;
+    }
+
+    public static int[] NSOL(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        LinkedList<Integer> st = new LinkedList<>();
+        st.addFirst(-1);
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (st.getFirst() != -1 && arr[st.getFirst()] > arr[i])
+                ans[st.removeFirst()] = i;
+
+            st.addFirst(i);
+        }
+
+        return ans;
+    }
+
+    public int maximumScore(int[] nums, int k) {
+
+        int[] right = NSOR(nums);
+        int[] left = NSOL(nums);
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            int left_p = left[i];
+            int right_p = right[i];
+            if (k <= left_p || k >= right_p)
+                continue;
+
+            ans = Math.max(ans, (right_p - left_p - 1) * nums[i]);
+        }
+
+        return ans;
+
     }
 
 }

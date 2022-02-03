@@ -98,6 +98,6 @@ System.out.print(b+" ");
     public static void main(String []args)
     {
        
-        System.out.println(recursionTree2(5));
+        System.out.println(fibo(10));
     }
 }
