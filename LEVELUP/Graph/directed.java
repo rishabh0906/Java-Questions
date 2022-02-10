@@ -54,7 +54,7 @@ public class directed {
         int V = graph.length;
         int[] indegree = new int[V];
         ArrayList<Integer> order = new ArrayList<>();
-    
+
         for (int i = 0; i < V; i++) {
             for (Edge e : graph[i]) {
                 indegree[e.v]++;
@@ -147,6 +147,137 @@ public class directed {
         }
 
         return level;
+
+    }
+
+    public int GetCycleLength(boolean[] vis, int[] favorite, int node) {
+
+        int count = 0;
+        while (!vis[node]) {
+            count++;
+            vis[node] = true;
+            node = favorite[node];
+        }
+
+        return count;
+    }
+
+    public int maximumInvitations(int[] favorite) {
+        int n = favorite.length;
+        ArrayList<Integer>[] adj = new ArrayList[n];
+        int[] indegree = new int[n];
+        for (int i = 0; i < n; i++)
+            adj[i] = new ArrayList<>();
+
+        for (int i = 0; i < favorite.length; i++) {
+            adj[i].add(favorite[i]);
+            indegree[favorite[i]]++;
+        }
+
+        int[] LongestAcyclicChain = new int[n];
+        boolean[] vis = new boolean[n];
+        LinkedList<Integer[]> queue = new LinkedList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                queue.addLast(new Integer[] { i, 0 });
+                vis[i] = true;
+            }
+        }
+        int nodeCount = 0;
+        while (queue.size() > 0) {
+            Integer[] top = queue.removeFirst();
+
+            nodeCount++;
+            for (int v : adj[top[0]]) {
+
+                indegree[v]--;
+                if (indegree[v] == 0) {
+                    vis[v] = true;
+                    queue.addLast(new Integer[] { v, top[1] + 1 });
+                }
+                LongestAcyclicChain[v] = Math.max(LongestAcyclicChain[v], top[1] + 1);
+            }
+        }
+
+        if (nodeCount == n) // 1. whole acyclic chain will be my ans
+            return nodeCount; // 2. A cycle length > 2 will be my ans
+                              // 3. sum of cycle length ==2 will be my ans
+        int ans = 0;
+
+        ArrayList<Integer> TwoLengthCycle = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                int len = GetCycleLength(vis, favorite, i);
+                if (len > 2) {
+                    ans = Math.max(ans, len);
+
+                } else if (len == 2) {
+
+                    TwoLengthCycle.add(i);
+                }
+            }
+        }
+        int ansForCycleLength2 = 0;
+        for (int node : TwoLengthCycle) {
+            ansForCycleLength2 += LongestAcyclicChain[node] + LongestAcyclicChain[favorite[node]] + 2;
+        }
+
+        return Math.max(ans, ansForCycleLength2);
+
+    }
+
+    public int CountSemester(ArrayList<Integer>[] adj, int[] indegree, int k, int n) {
+
+
+        int required = 0;
+        int Candidate = 0;
+
+        for (int i = 0; i < indegree.length; i++) {
+
+            if (indegree[i] == 0) {
+                required++;
+                Candidate |= (1 << i);
+            }
+        }
+
+        if (required <= k) {
+            for (int i = 0; i < n; i++) {
+
+                if (((1 << i) & Candidate) != 0) {
+                    for (int e : adj[i]) {
+
+                        indegree[e]--;
+                    }
+                }
+            }
+        }
+        else{
+             
+          
+
+        }
+
+    }
+
+    public int minNumberOfSemesters(int n, int[][] relations, int k) {
+
+        int[] indegree = new int[n];
+        ArrayList<Integer> adj[] = new ArrayList[n];
+
+        for (int i = 0; i < n; i++)
+            adj[i] = new ArrayList<>();
+
+        for (int[] edge : relations) {
+            edge[0]--;
+            edge[1]--;
+            adj[edge[0]].add(edge[1]);
+            indegree[edge[1]]++;
+        }
+
+        int mask = (1 << (n)) - 1;
+
+        return CountSemester(adj, indegree, k, n);
 
     }
 

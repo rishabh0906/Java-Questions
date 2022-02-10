@@ -16,19 +16,21 @@ public class recursion_arr {
 
     public static void print_rec_rev(int[] arr, int n) {
         if (n == 1) {
+
             System.out.print(arr[n - 1] + " ");
             return;
         }
+
         System.out.print(arr[n - 1] + " ");
         print_rec_rev(arr, n - 1);
 
     }
 
     public static int findmax(int[] arr, int n) {
-        if (n == 1) {
+        if (n == 1)
+             return arr[n - 1];
+                
 
-            return arr[n - 1];
-        }
         int res = findmax(arr, n - 1);
 
         return res > arr[n - 1] ? res : arr[n - 1];
