@@ -229,7 +229,6 @@ public class directed {
 
     public int CountSemester(ArrayList<Integer>[] adj, int[] indegree, int k, int n) {
 
-
         int required = 0;
         int Candidate = 0;
 
@@ -251,10 +250,7 @@ public class directed {
                     }
                 }
             }
-        }
-        else{
-             
-          
+        } else {
 
         }
 
@@ -278,6 +274,64 @@ public class directed {
         int mask = (1 << (n)) - 1;
 
         return CountSemester(adj, indegree, k, n);
+
+    }
+
+    public void Kosaraju(ArrayList<Edge>[] graph, int V) {
+
+    }
+
+    public double frogPosition(int n, int[][] edges, int t, int target) {
+        ArrayList<Integer>[] adj = new ArrayList[n];
+
+        for (int i = 0; i < n; i++)
+            adj[i] = new ArrayList<>();
+
+        for (int[] e : edges) {
+            int u = e[0];
+            int v = e[1];
+            u--;
+            v--;
+            adj[u].add(v);
+            adj[v].add(u);
+        }
+        boolean[] vis = new boolean[n];
+        LinkedList<Integer> queue = new LinkedList<>();
+        int[] nodes = new int[n];
+        int level = 0;
+        boolean isGood = false;
+        queue.addLast(0);
+        vis[0] = true;
+        while (queue.size() > 0) {
+
+            int size = queue.size();
+
+            while (size-- > 0) {
+
+                int top = queue.removeFirst();
+                nodes[level]++;
+
+                if (level == t && top == target) {
+                    isGood = true;
+                }
+
+                for (int v : adj[top]) {
+                    if (!vis[v]) {
+                        vis[v] = true;
+                        queue.addLast(v);
+
+                    }
+                }
+
+            }
+
+            level++;
+
+        }
+        for (int i = 0; i <= t; i++) {
+            System.out.println(nodes[i]);
+        }
+        return 0.0;
 
     }
 
